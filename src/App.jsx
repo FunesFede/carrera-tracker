@@ -53,7 +53,6 @@ function App() {
 			}
 		);
 
-		// Cleanup: detener el listener cuando el componente se desmonte
 		return () => unsubscribe();
 	}, []);
 

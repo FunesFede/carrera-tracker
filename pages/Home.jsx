@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import UserStateContext from "../utils/contexts/UserContext.js";
 
 import asignaturasData from "../data/asignaturas.json";
@@ -16,14 +16,19 @@ import { Badge, Col, Container, Row } from "react-bootstrap";
 
 export default function Main() {
 	const user = useContext(UserStateContext);
-	const [setLoading, loading] = useState(false);
 	const asignaturasContext = useContext(AsignaturasContext);
 
-	const primerAnio = asignaturasData.filter((asignatura) => asignatura.anio == 1).sort((a, b) => a.nombre.localeCompare(b.nombre));
-	const segundoAnio = asignaturasData.filter((asignatura) => asignatura.anio == 2).sort((a, b) => a.nombre.localeCompare(b.nombre));
-	const tercerAnio = asignaturasData.filter((asignatura) => asignatura.anio == 3).sort((a, b) => a.nombre.localeCompare(b.nombre));
-	const cuartoAnio = asignaturasData.filter((asignatura) => asignatura.anio == 4).sort((a, b) => a.nombre.localeCompare(b.nombre));
-	const quintoAnio = asignaturasData.filter((asignatura) => asignatura.anio == 5).sort((a, b) => a.nombre.localeCompare(b.nombre));
+	const asignaturasAnio = useMemo(() => {
+		const filtrar = (n) => asignaturasData.filter((a) => a.anio === n).sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+		return {
+			primero: filtrar(1),
+			segundo: filtrar(2),
+			tercero: filtrar(3),
+			cuarto: filtrar(4),
+			quinto: filtrar(5),
+		};
+	}, [asignaturasData]);
 
 	const handleSaludo = () => {
 		const now = new Date();
@@ -95,7 +100,7 @@ export default function Main() {
 						<Col xs={12} md className='bg-dark-custom rounded py-3 px-1' id='primero'>
 							<h3 className='titulo-columna'>Primer Año</h3>
 
-							{primerAnio.map((asig, index) => (
+							{asignaturasAnio.primero.map((asig, index) => (
 								<Asignatura key={index} asignatura={asig}></Asignatura>
 							))}
 						</Col>
@@ -103,7 +108,7 @@ export default function Main() {
 						<Col xs={12} md className='bg-dark-custom rounded py-3 px-1' id='segundo'>
 							<h3 className='titulo-columna'>Segundo Año</h3>
 
-							{segundoAnio.map((asig, index) => (
+							{asignaturasAnio.segundo.map((asig, index) => (
 								<Asignatura key={index} asignatura={asig}></Asignatura>
 							))}
 						</Col>
@@ -111,7 +116,7 @@ export default function Main() {
 						<Col xs={12} md className='bg-dark-custom rounded py-3 px-1' id='tercero'>
 							<h3 className='titulo-columna'>Tercer Año</h3>
 
-							{tercerAnio.map((asig, index) => (
+							{asignaturasAnio.tercero.map((asig, index) => (
 								<Asignatura key={index} asignatura={asig}></Asignatura>
 							))}
 						</Col>
@@ -119,7 +124,7 @@ export default function Main() {
 						<Col xs={12} md className='bg-dark-custom rounded py-3 px-1' id='cuarto'>
 							<h3 className='titulo-columna'>Cuarto Año</h3>
 
-							{cuartoAnio.map((asig, index) => (
+							{asignaturasAnio.cuarto.map((asig, index) => (
 								<Asignatura key={index} asignatura={asig}></Asignatura>
 							))}
 						</Col>
@@ -127,7 +132,7 @@ export default function Main() {
 						<Col xs={12} md className='bg-dark-custom rounded py-3 px-1' id='quinto'>
 							<h3 className='titulo-columna'>Quinto Año</h3>
 
-							{quintoAnio.map((asig, index) => (
+							{asignaturasAnio.quinto.map((asig, index) => (
 								<Asignatura key={index} asignatura={asig}></Asignatura>
 							))}
 						</Col>

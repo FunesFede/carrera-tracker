@@ -8,7 +8,7 @@ import SetNotaModal from "./modals/SetNotaModal.jsx";
 
 import { esCursable, esHecha } from "../utils/asignaturasHelpers.js";
 
-import { addRegularizada, borrarAsignaturaRecursivo } from "../utils/firebase/asignaturas.js";
+import { addRegularizada, borraraAsignaturaYDependencias } from "../utils/firebase/asignaturas.js";
 import { Badge, Button, Card, Container } from "react-bootstrap";
 
 export default function Asignatura({ asignatura }) {
@@ -36,7 +36,7 @@ export default function Asignatura({ asignatura }) {
 
 	const eliminarAsignatura = () => {
 		if (window.confirm("¿Seguro que deseas eliminar esta asignatura?\n\nAsignaturas que dependan de esta serán eliminadas y la nota de exámen final será removida.")) {
-			borrarAsignaturaRecursivo(user.uid, asignatura.acronimo);
+			borraraAsignaturaYDependencias(user.uid, asignatura.acronimo);
 		}
 	};
 

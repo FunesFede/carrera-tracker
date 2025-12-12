@@ -1,0 +1,552 @@
+[
+            {
+                "anio": 1,
+                "nombre": "Álgebra y Geometría Analítica",
+                "area": "",
+                "acronimo": "AGA",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Algoritmos y Estructuras de Datos",
+                "area": "",
+                "acronimo": "AED",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Análisis Matemático I",
+                "area": "",
+                "acronimo": "AMI",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Arquitectura de Computadoras",
+                "area": "",
+                "acronimo": "ACO",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Física I",
+                "area": "",
+                "acronimo": "FI",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Ingeniería y Sociedad",
+                "area": "",
+                "acronimo": "ISO",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Inglés I",
+                "area": "",
+                "acronimo": "INGLESI",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Lógica y Estructuras Discretas",
+                "area": "",
+                "acronimo": "LED",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 1,
+                "nombre": "Sistemas y Procesos de Negocio",
+                "area": "",
+                "acronimo": "SPN",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Análisis de Sistemas de Información",
+                "area": "",
+                "acronimo": "ASI",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["AED", "SPN"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Análisis Matemático II",
+                "area": "",
+                "acronimo": "AMII",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["AMI", "AGA"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Física II",
+                "area": "",
+                "acronimo": "FII",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["FI", "AMI"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Paradigmas de Programación",
+                "area": "",
+                "acronimo": "PPR",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["LED", "AED"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Probabilidad y Estadística",
+                "area": "",
+                "acronimo": "PYE",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AMI", "AGA"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Sintaxis y Semántica de los Lenguajes",
+                "area": "",
+                "acronimo": "SSL",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["LED", "AED"],
+                "aprobadas": []
+            },
+            {
+                "anio": 2,
+                "nombre": "Sistemas Operativos",
+                "area": "",
+                "acronimo": "SOP",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["ACO"],
+                "aprobadas": []
+            },
+            {
+                "anio": 3,
+                "nombre": "Análisis Numérico",
+                "area": "",
+                "acronimo": "AN",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AMII"],
+                "aprobadas": ["AMI", "AGA"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Backend de Aplicaciones",
+                "area": "",
+                "acronimo": "BDA",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["PPR", "SSL"],
+                "aprobadas": ["AED"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Bases de Datos",
+                "area": "",
+                "acronimo": "BDD",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["SSL", "ASI"],
+                "aprobadas": ["LED", "AED"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Comunicación de Datos",
+                "area": "",
+                "acronimo": "COM",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": [],
+                "aprobadas": ["FI", "ACO"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Desarrollo de Software",
+                "area": "",
+                "acronimo": "DDS",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["PPR", "ASI"],
+                "aprobadas": ["AED", "LED"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Diseño de Sistemas de Información",
+                "area": "",
+                "acronimo": "DSI",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["PPR", "ASI"],
+                "aprobadas": ["INGLESI", "AED", "SPN"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Economía",
+                "area": "",
+                "acronimo": "ECO",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": [],
+                "aprobadas": ["AMI", "AGA"]
+            },
+            {
+                "anio": 3,
+                "nombre": "Inglés II",
+                "area": "",
+                "acronimo": "INGLESII",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["INGLESI"],
+                "aprobadas": []
+            },
+            {
+                "anio": 4,
+                "nombre": "Administración de Sistemas de Información",
+                "area": "",
+                "acronimo": "AS",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["ECO", "DSI"],
+                "aprobadas": ["ASI"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Arquitectura de Software",
+                "area": "",
+                "acronimo": "ARQS",
+                "tipo": "Electiva",
+                "duracion": "Anual",
+                "regularizadas": ["BDD", "DDS"],
+                "aprobadas": ["SSL", "PPR"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Comunicación Multimedial en el Desarrollo de Sistemas de Información",
+                "area": "",
+                "acronimo": "CM",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD"],
+                "aprobadas": ["SPN", "ASI"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Desarrollo y Operaciones DevOps",
+                "area": "",
+                "acronimo": "DOPS",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD", "DDS"],
+                "aprobadas": ["SSL", "PPR"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Desarrollo de Aplicaciones con Objetos",
+                "area": "",
+                "acronimo": "DAO",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["SSL"],
+                "aprobadas": ["AED"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Gestión de la Mejora de Procesos",
+                "area": "",
+                "acronimo": "GMP",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD"],
+                "aprobadas": ["SPN", "ASI"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Gestión Industrial de la Producción",
+                "area": "",
+                "acronimo": "GI",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD"],
+                "aprobadas": ["SPN", "ASI"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Green Software",
+                "area": "",
+                "acronimo": "GS",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["DDS", "BDD"],
+                "aprobadas": ["PPR", "SSL"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Ingeniería y Calidad de Software",
+                "area": "",
+                "acronimo": "IS",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD", "DSI", "DDS"],
+                "aprobadas": ["SSL", "PPR"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Investigación Operativa",
+                "area": "",
+                "acronimo": "IOP",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["PYE", "AN"],
+                "aprobadas": []
+            },
+            {
+                "anio": 4,
+                "nombre": "Legislación",
+                "area": "",
+                "acronimo": "LEG",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["ISO"],
+                "aprobadas": []
+            },
+            {
+                "anio": 4,
+                "nombre": "Redes de Datos",
+                "area": "",
+                "acronimo": "RDD",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["SOP", "COM"],
+                "aprobadas": []
+            },
+            {
+                "anio": 4,
+                "nombre": "Simulación",
+                "area": "",
+                "acronimo": "SIM",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["PYE"],
+                "aprobadas": ["AMII"]
+            },
+            {
+                "anio": 4,
+                "nombre": "Tecnología para la automatización",
+                "area": "",
+                "acronimo": "TA",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["FII", "AN"],
+                "aprobadas": ["AMII"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Ciencias de Datos",
+                "area": "",
+                "acronimo": "CDD",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["SIM"],
+                "aprobadas": ["PYE", "BDD"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Consultoría en Negocios Digitales",
+                "area": "",
+                "acronimo": "CON",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AS"],
+                "aprobadas": ["DDS"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Creatividad e Innovación en Ingeniería",
+                "area": "",
+                "acronimo": "CII",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AS"],
+                "aprobadas": ["DDS"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Decisiones en Escenarios Complejos",
+                "area": "",
+                "acronimo": "DEC",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["IOP"],
+                "aprobadas": ["BDD"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Emprendimientos Tecnológicos",
+                "area": "",
+                "acronimo": "EMP",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AS"],
+                "aprobadas": ["ASI", "BDD"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Gerenciamiento Estratégico",
+                "area": "",
+                "acronimo": "GE",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AS"],
+                "aprobadas": ["DDS"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Gestión Gerencial",
+                "area": "",
+                "acronimo": "GG",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["LEG", "AS"],
+                "aprobadas": ["ECO"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Desarrollo de Tecnología Blockchain",
+                "area": "",
+                "acronimo": "DTB",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["RDD", "BDD"],
+                "aprobadas": ["DDS", "PPR"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Ingeniería de Software de Fuentes Abiertas/Libres",
+                "area": "",
+                "acronimo": "SOFTAB",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["BDD", "DDS", "RDD"],
+                "aprobadas": ["SSL", "PPR"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Inteligencia Artificial",
+                "area": "",
+                "acronimo": "IA",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["SIM"],
+                "aprobadas": ["PYE", "AN"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Proyecto Final",
+                "area": "",
+                "acronimo": "PROYFIN",
+                "tipo": "Obligatoria",
+                "duracion": "Anual",
+                "regularizadas": ["IS", "RDD", "AS"],
+                "aprobadas": ["INGLESII", "DDS", "DSI"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Seguridad en los Sistemas de Información",
+                "area": "",
+                "acronimo": "SSI",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["RDD", "AS"],
+                "aprobadas": ["DDS", "COM"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Sistemas de Gestión",
+                "area": "",
+                "acronimo": "SG",
+                "tipo": "Obligatoria",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["ECO", "IOP"],
+                "aprobadas": ["DSI"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Auditoría de Si/Ti",
+                "area": "",
+                "acronimo": "ASITI",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["AS"],
+                "aprobadas": ["DDS"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Testing de Software",
+                "area": "",
+                "acronimo": "TS",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["IS"],
+                "aprobadas": ["BDD", "DDS"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Seguridad en el Desarrollo de Software",
+                "area": "",
+                "acronimo": "SDS",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["RDD", "BDD"],
+                "aprobadas": ["DDS", "SPN"]
+            },
+            {
+                "anio": 5,
+                "nombre": "Integración de Aplicaciones en Entorno Web",
+                "area": "",
+                "acronimo": "IAEW",
+                "tipo": "Electiva",
+                "duracion": "Cuatrimestral",
+                "regularizadas": ["RDD", "BDD"],
+                "aprobadas": ["BDD", "DDS"]
+            }
+]

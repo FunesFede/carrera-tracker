@@ -127,7 +127,7 @@ export default function AsignaturaInfo() {
 		<>
 			<SetNotaModal show={showModal} setShow={setShowModal} aNota={nota} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
 
-			<Container fluid className='d-flex flex-column flex-grow-1 justify-content-center'>
+			<Container fluid className='d-flex flex-column flex-grow-1 justify-content-center my-4'>
 				<Container fluid className='w-responsive'>
 					<Breadcrumb aria-label='breadcrumb'>
 						<BreadcrumbItem>
