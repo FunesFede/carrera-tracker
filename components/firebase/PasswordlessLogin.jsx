@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAdditionalUserInfo, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailAndPassword, signInWithEmailLink } from "firebase/auth";
+import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
 
@@ -8,10 +8,9 @@ import { NavLink, useNavigate } from "react-router";
 import { Button, Container, FloatingLabel, Form, InputGroup } from "react-bootstrap";
 
 const actionCodeSettings = {
-	//url: "https://carrera.ffede.ar/login/passwordless/callback",
-	url: "http://localhost:5173/login/passwordless/callback",
+	url: "https://carrera.ffede.ar/login/passwordless/callback",
 	handleCodeInApp: true,
-	// linkDomain: "carrera.ffede.ar",
+	linkDomain: "carrera.ffede.ar",
 };
 
 const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
@@ -63,6 +62,7 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 					break;
 				case "auth/invalid-action-code":
 					errorMessage = "Código inválido, el link puede ya haber sido usado o haber expirado";
+					break;
 				default:
 					console.error("Authentication Error:", err.code, err.message);
 					toast.error(errorMessage);
