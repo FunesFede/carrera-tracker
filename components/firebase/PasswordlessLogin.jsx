@@ -10,7 +10,7 @@ import { Button, Container, FloatingLabel, Form, InputGroup } from "react-bootst
 const actionCodeSettings = {
 	url: "https://carrera.ffede.ar/login/passwordless/callback",
 	handleCodeInApp: true,
-	linkDomain: "carrera.ffede.ar",
+	// linkDomain: "carrera.ffede.ar",
 };
 
 const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
