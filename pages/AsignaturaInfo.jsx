@@ -19,7 +19,7 @@ import ListGroupItem from "react-bootstrap/ListGroupItem";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { Stack } from "react-bootstrap";
 
 export default function AsignaturaInfo() {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -37,7 +37,7 @@ export default function AsignaturaInfo() {
 			handleAddNota();
 			setSearchParams({}, { replace: true });
 		}
-	}, [searchParams]);
+	}, [searchParams, setSearchParams]);
 
 	let asignatura = asignaturasData.filter((asign) => asign.acronimo == acrom.toUpperCase())[0];
 	if (!asignatura) {
@@ -130,9 +130,9 @@ export default function AsignaturaInfo() {
 			<Container fluid className='d-flex flex-column flex-grow-1 justify-content-center my-4'>
 				<Container fluid className='w-responsive'>
 					<Breadcrumb aria-label='breadcrumb'>
-						<BreadcrumbItem>
-							<NavLink to='/'>Home</NavLink>
-						</BreadcrumbItem>
+						<NavLink className='breadcrumb-item' to='/'>
+							Home
+						</NavLink>
 						<BreadcrumbItem active>Asignaturas</BreadcrumbItem>
 						<BreadcrumbItem active>{asignatura.nombre}</BreadcrumbItem>
 					</Breadcrumb>
@@ -148,7 +148,7 @@ export default function AsignaturaInfo() {
 									{asignatura.acronimo}
 								</Card.Subtitle>
 							</Card.Title>
-							<Card.Text className='mt-1'>
+							<Card.Text as='div' className='mt-1'>
 								<ListGroup variant='flush'>
 									<ListGroupItem key='1' className='bg-dark-custom'>
 										<span className='fw-bold'>Estado:</span> {handleEstado()}{" "}
@@ -233,40 +233,39 @@ export default function AsignaturaInfo() {
 								</ListGroup>
 							</Card.Text>
 							<Card.Footer className='bg-dark-custom'>
-								<Row>
-									<Col md={6}>
-										<Form.Select
-											onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
-											disabled={asignAprobadas.length == 0 && asignRegularizadas.length == 0}
-										>
-											<option selected hidden value='-1'>
-												{asignAprobadas.length == 0 && asignRegularizadas.length == 0 ? "No hay correlativas" : "Visitar correlativa"}
-											</option>
-											{[...asignRegularizadas, ...asignAprobadas]
-												.toSorted((a, b) => a.nombre.localeCompare(b.nombre))
-												.map((asign, index) => (
-													<option key={index} value={asign.acronimo}>
-														{asign.nombre}
-													</option>
-												))}
-										</Form.Select>
-									</Col>
-									<Col md={6}>
-										<Form.Select
-											onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
-											disabled={correlativaFutura.length == 0}
-										>
-											<option selected hidden value='-1'>
-												{correlativaFutura.length == 0 ? "No hay dependientes" : "Visitar Dependiente"}
-											</option>
-											{correlativaFutura.map((asign, index) => (
+								<Stack gap={2}>
+									<Form.Select
+										onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
+										disabled={asignAprobadas.length == 0 && asignRegularizadas.length == 0}
+										defaultValue='-1'
+									>
+										<option hidden value='-1'>
+											{asignAprobadas.length == 0 && asignRegularizadas.length == 0 ? "No hay correlativas" : "Visitar correlativa"}
+										</option>
+										{[...asignRegularizadas, ...asignAprobadas]
+											.toSorted((a, b) => a.nombre.localeCompare(b.nombre))
+											.map((asign, index) => (
 												<option key={index} value={asign.acronimo}>
 													{asign.nombre}
 												</option>
 											))}
-										</Form.Select>
-									</Col>
-								</Row>
+									</Form.Select>
+									<Form.Select
+										onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
+										disabled={correlativaFutura.length == 0}
+										defaultValue='-1'
+									>
+										<option hidden value='-1'>
+											{correlativaFutura.length == 0 ? "No hay dependientes" : "Visitar Dependiente"}
+										</option>
+										{correlativaFutura.map((asign, index) => (
+											<option key={index} value={asign.acronimo}>
+												{asign.nombre}
+											</option>
+										))}
+									</Form.Select>
+								</Stack>
+
 								<Button variant='primary' className='me-3 mt-3' onClick={() => navigate(-1)}>
 									<i className='bi bi-arrow-left'></i> Volver
 								</Button>

@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Container, FloatingLabel, Form, InputGroup } from "react-bootstrap";
+import { Button, FloatingLabel, Form } from "react-bootstrap";
 
 const FirebaseRegister = ({ onSignInSuccess }) => {
 	const [loading, setLoading] = useState(false);
-	const [showPass, setShowPass] = useState(false);
 	const navigate = useNavigate();
 
 	const {
@@ -28,7 +27,7 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 			navigate("/", { replace: true });
 
 			await sendEmailVerification(userCredential.user);
-			toast.info("Te enviamos un correo de verificación automaticamente, revisá tu bandeja de entrada para verificar tu email");
+			toast.info("Te enviamos un correo de verificación automaticamente, revisá tu bandeja de entrada para verificar tu dirección email");
 		} catch (err) {
 			let errorMessage = "Ocurrió un error desconocido. " + err.code;
 			switch (err.code) {
@@ -37,9 +36,10 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 					break;
 
 				case "auth/password-does-not-meet-requirements":
-					const regex = /\[[^\]]*\]/i;
-					const requirements = regex.exec(err.message)[0];
+					var regex = /\[[^\]]*\]/i;
+					var requirements = regex.exec(err.message)[0].replaceAll("[", "").replaceAll("]", "");
 					errorMessage = "La contraseña no cumple con los requisitos: " + requirements;
+					break;
 
 				default:
 					console.error("Authentication Error:", err.code);
@@ -101,7 +101,7 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 						placeholder='*****'
 						id='pass'
 						autoComplete='current-password'
-						type={showPass ? "text" : "password"}
+						type='password'
 						{...register("password", { required: true })}
 					/>
 					{errors.password && <Form.Control.Feedback type='invalid'>Una contraseña es requerida</Form.Control.Feedback>}

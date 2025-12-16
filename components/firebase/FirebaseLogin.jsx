@@ -10,7 +10,6 @@ import { Button, Col, Container, FloatingLabel, Form, InputGroup, Row, Stack } f
 const FirebaseLogin = ({ onSignInSuccess, from }) => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
-	const [showPass, setShowPass] = useState(false);
 
 	const {
 		register,
@@ -96,7 +95,7 @@ const FirebaseLogin = ({ onSignInSuccess, from }) => {
 						placeholder='********'
 						autoComplete='current-password'
 						id='pass'
-						type={showPass ? "text" : "password"}
+						type={"password"}
 						{...register("password", { required: true })}
 					/>
 

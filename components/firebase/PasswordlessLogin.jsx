@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import { Button, Container, FloatingLabel, Form, InputGroup } from "react-bootst
 const actionCodeSettings = {
 	url: "https://carrera.ffede.ar/login/passwordless/callback",
 	handleCodeInApp: true,
-	// linkDomain: "carrera.ffede.ar",
 };
 
 const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
@@ -37,15 +36,15 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 				navigate("/login/passwordless");
 			}
 		}
-	}, []);
+	}, [navigate, signIn]);
 
 	useEffect(() => {
 		if (emailForSignIn) {
 			handleSignIn();
 		}
-	}, [emailForSignIn]);
+	}, [emailForSignIn, handleSignIn]);
 
-	const handleSignIn = async () => {
+	const handleSignIn = useCallback(async () => {
 		try {
 			console.log(emailForSignIn, window.location.href);
 			const user = await signInWithEmailLink(auth, emailForSignIn, window.location.href);
@@ -69,7 +68,7 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 					break;
 			}
 		}
-	};
+	}, [emailForSignIn, from, navigate, onSignInSuccess]);
 
 	const handleAuth = async (data) => {
 		setLoading(true);
