@@ -31,6 +31,8 @@ import { getAlertas } from "../utils/firebase/alerts.js";
 import { Alert, Container } from "react-bootstrap";
 import Admin from "../pages/admin/Admin.jsx";
 
+import Snowfall from "react-snowfall";
+
 function App() {
 	const [user, setUser] = useState(null);
 	const [asignaturas, setAsignaturas] = useState(null);
@@ -87,6 +89,7 @@ function App() {
 					<NotasContext.Provider value={notas}>
 						<BrowserRouter>
 							<div className='d-flex flex-column min-vh-100'>
+								<Snowfall />
 								<Navbar setAsignaturas={setAsignaturas} />
 								<Container fluid className='m-0 mt-3'>
 									{alerts.length != 0 ? (

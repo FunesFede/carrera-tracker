@@ -42,7 +42,7 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 		if (emailForSignIn) {
 			handleSignIn();
 		}
-	}, [emailForSignIn, handleSignIn]);
+	}, [emailForSignIn]);
 
 	const handleSignIn = useCallback(async () => {
 		try {
