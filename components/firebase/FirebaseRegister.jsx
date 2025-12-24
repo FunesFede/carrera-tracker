@@ -5,10 +5,13 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router";
-import { Button, FloatingLabel, Form } from "react-bootstrap";
+import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+
+import ReCAPTCHA from "react-google-recaptcha";
 
 const FirebaseRegister = ({ onSignInSuccess }) => {
 	const [loading, setLoading] = useState(false);
+	const [recaptchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
 
 	const {
@@ -17,7 +20,12 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 		formState: { errors },
 	} = useForm();
 
+	const onCaptchaChange = (value) => {
+		setCaptchaValid(Boolean(value));
+	};
+
 	const handleAuth = async (data) => {
+		if (!recaptchaValid) return;
 		setLoading(true);
 		try {
 			let userCredential;
@@ -108,7 +116,11 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 				</FloatingLabel>
 			</Form.Group>
 
-			<Button variant='primary' type='submit' disabled={loading}>
+			<Container className='mb-3 d-flex justify-content-center'>
+				<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
+			</Container>
+
+			<Button variant='primary' type='submit' disabled={loading || !recaptchaValid}>
 				{loading ? (
 					<>
 						<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>

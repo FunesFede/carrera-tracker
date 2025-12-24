@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import UserStateContext from "../utils/contexts/UserContext.js";
 
 import asignaturasData from "../data/asignaturas.json";
@@ -14,6 +14,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { Badge, Col, Container, Row } from "react-bootstrap";
 
+import Snowfall from "react-snowfall";
+
 export default function Main() {
 	const user = useContext(UserStateContext);
 	const asignaturasContext = useContext(AsignaturasContext);
@@ -28,7 +30,7 @@ export default function Main() {
 			cuarto: filtrar(4),
 			quinto: filtrar(5),
 		};
-	}, [asignaturasData]);
+	}, []);
 
 	const handleSaludo = () => {
 		const now = new Date();
@@ -52,7 +54,7 @@ export default function Main() {
 		return asigs.filter((a) => !asignaturasContext.aprobadas.includes(a.acronimo) && !asignaturasContext.regularizadas.includes(a.acronimo)).length;
 	};
 
-	const getTotalCount = (asigs) => {
+	const _getTotalCount = (asigs) => {
 		return asigs.filter((a) => asignaturasContext.aprobadas.includes(a.acronimo) && asignaturasContext.regularizadas.includes(a.acronimo)).length;
 	};
 
@@ -78,7 +80,7 @@ export default function Main() {
 		);
 	};
 
-	const getInfoIcon = (asigs) => {
+	const _getInfoIcon = (asigs) => {
 		return (
 			<OverlayTrigger placement='right' overlay={getTooltip(asigs)}>
 				<i class='bi bi-question-circle-fill'></i>
@@ -90,6 +92,7 @@ export default function Main() {
 		<>
 			<Container fluid className='py-4 bg-dark text-white d-flex flex-column flex-grow-1'>
 				<Container fluid>
+					<Snowfall />
 					<h3 className='text-start mb-3 mx-2'>
 						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
 					</h3>

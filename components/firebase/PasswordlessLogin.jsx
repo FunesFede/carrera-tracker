@@ -5,7 +5,9 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Container, FloatingLabel, Form, InputGroup } from "react-bootstrap";
+import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+
+import ReCAPTCHA from "react-google-recaptcha";
 
 const actionCodeSettings = {
 	url: "https://carrera.ffede.ar/login/passwordless/callback",
@@ -15,6 +17,7 @@ const actionCodeSettings = {
 const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 	const [loading, setLoading] = useState(false);
 	const [done, setDone] = useState(false);
+	const [recaptchaValid, setCaptchaValid] = useState(false);
 	const [emailForSignIn, setEmailForSignIn] = useState();
 	const navigate = useNavigate();
 
@@ -23,6 +26,10 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
+
+	const onCaptchaChange = (value) => {
+		setCaptchaValid(Boolean(value));
+	};
 
 	useEffect(() => {
 		if (signIn) {
@@ -42,7 +49,7 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 		if (emailForSignIn) {
 			handleSignIn();
 		}
-	}, [emailForSignIn]);
+	});
 
 	const handleSignIn = useCallback(async () => {
 		try {
@@ -127,7 +134,11 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 				</FloatingLabel>
 			</Form.Group>
 
-			<Button variant='primary' type='submit' disabled={loading || done || signIn}>
+			<Container className='mb-3 d-flex justify-content-center'>
+				<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
+			</Container>
+
+			<Button variant='primary' type='submit' disabled={loading || done || signIn || !recaptchaValid}>
 				{loading || signIn ? (
 					<>
 						<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
@@ -155,7 +166,7 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 					<p className='text-secondary mt-2 mb-0'>
 						¿Preferís usar tu contraseña?{" "}
 						<NavLink className='link-underline link-underline-opacity-0' to='/login'>
-							Iniciá sesión con contraseña
+							Iniciar sesión con contraseña
 						</NavLink>
 					</p>
 					<p className='text-secondary mt-1'>

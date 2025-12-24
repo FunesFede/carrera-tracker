@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
 import { ToastContainer, Flip } from "react-toastify";
 import { useState, useEffect } from "react";
 
@@ -30,8 +30,6 @@ import PasswordlessLoginCallback from "../pages/auth/PasswordlessLoginCallback.j
 import { getAlertas } from "../utils/firebase/alerts.js";
 import { Alert, Container } from "react-bootstrap";
 import Admin from "../pages/admin/Admin.jsx";
-
-import Snowfall from "react-snowfall";
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -89,7 +87,6 @@ function App() {
 					<NotasContext.Provider value={notas}>
 						<BrowserRouter>
 							<div className='d-flex flex-column min-vh-100'>
-								<Snowfall />
 								<Navbar setAsignaturas={setAsignaturas} />
 								<Container fluid className='m-0 mt-3'>
 									{alerts.length != 0 ? (
