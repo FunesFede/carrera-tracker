@@ -5,16 +5,12 @@ import asignaturasData from "../data/asignaturas.json";
 
 import Asignatura from "../components/Asignatura.jsx";
 
-import CorrelativasModal from "../components/modals/CorrelativasModal.jsx";
-import SetNotaModal from "../components/modals/SetNotaModal.jsx";
 import MobileIndex from "../components/MobileIndex.jsx";
 import AsignaturasContext from "../utils/contexts/AsignaturasContext.js";
 
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { Badge, Col, Container, Row } from "react-bootstrap";
-
-import Snowfall from "react-snowfall";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function Main() {
 	const user = useContext(UserStateContext);
@@ -92,7 +88,6 @@ export default function Main() {
 		<>
 			<Container fluid className='py-4 bg-dark text-white d-flex flex-column flex-grow-1'>
 				<Container fluid>
-					<Snowfall />
 					<h3 className='text-start mb-3 mx-2'>
 						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
 					</h3>
