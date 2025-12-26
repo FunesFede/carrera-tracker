@@ -2,7 +2,6 @@ import { db } from "/firebase/config";
 import { doc, setDoc, onSnapshot, getDoc, updateDoc, deleteField } from "firebase/firestore";
 
 export const getNotasDocRef = (userId) => {
-	// RUTA SOLICITADA: /users/{userId}/asignaturas/notas
 	return doc(db, "users", userId, "asignaturas", "notas");
 };
 
@@ -95,5 +94,8 @@ export const removeNota = async (userId, acronimo) => {
 		await updateDoc(docRef, {
 			[acronimoUp]: deleteField(),
 		});
-	} catch (error) {}
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
 };

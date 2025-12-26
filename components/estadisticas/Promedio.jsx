@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import AsignaturasContext from "../../utils/contexts/AsignaturasContext";
 import NotasContext from "../../utils/contexts/NotasContext";
