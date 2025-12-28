@@ -1,3 +1,4 @@
+import { addAprobada, removeRegularizada } from "./asignaturas";
 import { db } from "/firebase/config";
 import { doc, setDoc, onSnapshot, getDoc, updateDoc, deleteField } from "firebase/firestore";
 
@@ -97,5 +98,24 @@ export const removeNota = async (userId, acronimo) => {
 	} catch (error) {
 		console.error(error);
 		return false;
+	}
+};
+
+export const addNotaYAprobar = async (userId, asignatura, data, aNota, asignaturasContext) => {
+	try {
+		const notaAdded = await addNota(userId, asignatura.acronimo, data.nota);
+		const aprobadaAdded = aNota ? true : await addAprobada(userId, asignatura.acronimo);
+
+		if (asignaturasContext.regularizadas.includes(asignatura.acronimo)) {
+			await removeRegularizada(userId, asignatura.acronimo);
+		}
+
+		if (!notaAdded || !aprobadaAdded) {
+			throw new Error("No fue posible aprobar " + asignatura.acronimo + ". Nota añadida: " + notaAdded + ", aprobada añadida: " + aprobadaAdded);
+		}
+		return true;
+	} catch (error) {
+		console.error(error);
+		throw error;
 	}
 };

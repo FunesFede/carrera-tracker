@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
-import { ToastContainer, Flip } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
 import { useState, useEffect } from "react";
 
 import Home from "../pages/Home.jsx";
@@ -39,7 +39,7 @@ function App() {
 	const [authChecked, setAuthChecked] = useState(false);
 	const [alerts, setAlerts] = useState([]);
 
-	const handleSignInSuccess = (user) => {
+	const handleSignInSuccess = () => {
 		setLoading(true);
 	};
 
@@ -95,7 +95,7 @@ function App() {
 												return;
 											}
 											return (
-												<Alert dismissible={alert?.dismissable || false} key={alert.id} variant={alert?.type || "info"} className='text-start m-0'>
+												<Alert dismissible={alert?.dismissable || false} key={alert.id} variant={alert?.type || "info"} className='text-start m-0 mb-2'>
 													<Alert.Heading>
 														{alert?.type == "warning" || alert?.type == "danger" ? (
 															<i className='bi bi-exclamation-triangle'></i>
@@ -171,13 +171,10 @@ function App() {
 									autoClose={5500}
 									hideProgressBar={false}
 									newestOnTop={false}
-									closeOnClick={false}
-									rtl={false}
-									pauseOnFocusLoss
 									draggable
 									pauseOnHover
 									theme='dark'
-									transition={Flip}
+									transition={Slide}
 								/>
 							</div>
 							<Footer />

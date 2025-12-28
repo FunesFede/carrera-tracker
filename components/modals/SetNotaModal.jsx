@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { addAprobada, removeRegularizada } from "../../utils/firebase/asignaturas";
 import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
 
-import { addNota } from "../../utils/firebase/notas";
+import { addNotaYAprobar } from "../../utils/firebase/notas";
 
-import { toast } from "react-toastify";
+import { Slide, toast } from "react-toastify";
 
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -20,24 +19,16 @@ export default function SetNotaModalR({ show, setShow, userId, asignatura, aNota
 		register,
 		handleSubmit,
 		formState: { errors, isDirty },
-	} = useForm({ defaultValues: { nota: aNota } });
+	} = useForm({ values: { nota: aNota } });
 
 	const handleModal = async (data) => {
 		setLoading(true);
 
-		const notaAdded = await addNota(userId, asignatura.acronimo, data.nota);
-		const aprobadaAdded = aNota ? true : await addAprobada(userId, asignatura.acronimo);
-
-		if (asignaturasContext.regularizadas.includes(asignatura.acronimo)) {
-			await removeRegularizada(userId, asignatura.acronimo);
-		}
-
-		if (!notaAdded || !aprobadaAdded) {
-			toast.error("Algo salió mal al intentar registrar la asignatura como aprobada. Intentá de nuevo.");
-			console.error("No fue posible aprobar " + asignatura.acronimo + ". Nota añadida: " + notaAdded + ", aprobada añadida: " + aprobadaAdded);
-		} else if (aNota) {
-			toast.success("Nota modificada correctamente");
-		}
+		toast.promise(addNotaYAprobar(userId, asignatura, data, aNota, asignaturasContext), {
+			pending: aNota ? "Modificando nota..." : "Registrando nota...",
+			success: aNota ? "Nota modificada correctamente" : "Nota registrada correctamente",
+			error: aNota ? "Algo salió mal al intentar modificar la nota" : "Algo salió mal al intentar registrar la nota",
+		});
 
 		setLoading(false);
 		cerrarModal();

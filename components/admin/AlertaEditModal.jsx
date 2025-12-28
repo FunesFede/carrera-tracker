@@ -13,32 +13,33 @@ export default function AlertaModal({ alert, show, setShow }) {
 		formState: { errors, isDirty },
 	} = useForm({ values: alert });
 
-	const handleModal = async (data) => {
-		setLoading(true);
-		try {
-			await editAlerta(alert.id, data);
-			toast.success("Alerta editada correctamente");
-		} catch (err) {
-			console.error(err);
-			toast.error("Algo salió mal");
-		}
-		setLoading(false);
-		cerrarModal();
-	};
-
 	const cerrarModal = () => {
 		setShow(false);
 	};
 
-	const handleRemove = async () => {
+	const handleModal = async (data) => {
 		setLoading(true);
-		try {
-			await removeAlerta(alert.id);
-			toast.success("Alerta eliminada correctamente");
-		} catch (err) {
-			console.error(err);
-			toast.error("Algo salió mal");
-		}
+		toast
+			.promise(editAlerta(alert.id, data), {
+				pending: "Editando alerta...",
+				success: "Alerta modificada correctamente",
+				error: "Algo salió mal al intentar editar la alerta",
+			})
+			.catch((e) => console.error(e));
+		setLoading(false);
+		cerrarModal();
+	};
+
+	const handleRemove = async () => {
+		if (!window.confirm("¿Estás seguro de eliminar esta alerta?")) return;
+		setLoading(true);
+		toast
+			.promise(removeAlerta(alert.id), {
+				pending: "Eliminando alerta...",
+				success: "Alerta eliminada correctamente",
+				error: "Algo salió mal al intentar eliminar la alerta",
+			})
+			.catch((e) => console.error(e));
 		setLoading(false);
 		cerrarModal();
 	};

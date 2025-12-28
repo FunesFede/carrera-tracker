@@ -130,7 +130,7 @@ export default function AsignaturaInfo() {
 			<Container fluid className='d-flex flex-column flex-grow-1 justify-content-center my-4'>
 				<Container fluid className='w-responsive'>
 					<Breadcrumb aria-label='breadcrumb'>
-						<NavLink className='breadcrumb-item' to='/'>
+						<NavLink className='breadcrumb-item link-underline link-underline-opacity-0' to='/'>
 							Home
 						</NavLink>
 						<BreadcrumbItem active>Asignaturas</BreadcrumbItem>

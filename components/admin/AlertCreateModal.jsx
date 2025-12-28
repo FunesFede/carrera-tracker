@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Modal, Button, FloatingLabel } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { addAlerta, editAlerta } from "../../utils/firebase/alerts";
+import { addAlerta } from "../../utils/firebase/alerts";
 import { toast } from "react-toastify";
 
 export default function AlertCreateModal({ show, setShow }) {
@@ -15,13 +15,9 @@ export default function AlertCreateModal({ show, setShow }) {
 
 	const handleModal = async (data) => {
 		setLoading(true);
-		try {
-			await addAlerta(data);
-			toast.success("Alerta creada correctamente");
-		} catch (err) {
-			console.error(err);
-			toast.error("Algo salió mal");
-		}
+		toast
+			.promise(addAlerta(data), { pending: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
+			.catch((e) => console.error(e));
 		setLoading(false);
 		cerrarModal();
 	};

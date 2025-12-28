@@ -15,7 +15,7 @@ export default function NavbarR({ setAsignaturas }) {
 	const buscarAsignatura = (e) => {
 		e.preventDefault();
 
-		if (query == "" || query == " ") navigate("/");
+		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/");
 
 		if (!query.trim()) return;
 		const lowerQuery = query.toLowerCase();
