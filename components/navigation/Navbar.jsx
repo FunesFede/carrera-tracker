@@ -6,6 +6,7 @@ import asignaturas from "../../data/asignaturas.json";
 import UserStateContext from "../../utils/contexts/UserContext";
 import Profile from "../Profile";
 import { Button, Container, Form, InputGroup, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { isAdmin } from "../../utils/admin";
 
 export default function NavbarR({ setAsignaturas }) {
 	const [query, setQuery] = useState("");
@@ -138,7 +139,7 @@ export default function NavbarR({ setAsignaturas }) {
 								<i className='bi bi-question-circle-fill'></i> Guía Botones
 							</a>
 						</li> */}
-					{(user?.uid == "qXjO3KvuJRca9ED7kwPJFvW0qbo1" || user?.uid == "MBW4S4gg2JfueKmOnpLPHFADR4k1") && (
+					{isAdmin(user?.uid) && (
 						<li className='nav-item'>
 							<NavLink to='/admin' className='nav-link'>
 								<i className='bi bi-tools'></i> Admin
