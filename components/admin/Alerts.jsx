@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Table } from "react-bootstrap";
 import { getAlertas, removeAlerta } from "../../utils/firebase/alerts";
 import AlertaModal from "./AlertaEditModal";
 import AlertCreateModal from "./AlertCreateModal";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 export default function Alerts() {
 	const [alerts, setAlerts] = useState([]);
@@ -28,51 +30,54 @@ export default function Alerts() {
 	};
 
 	return (
-		<Container fluid className='bg-dark-custom rounded p-3'>
-			<AlertaModal show={showModal} setShow={setShowModal} alert={selectedAlert} />
-			<AlertCreateModal show={showCreate} setShow={setShowCreate} />
-			<Table responsive striped hover>
-				<thead>
-					<tr>
-						<th scope='col'>ID</th>
-						<th scope='col'>Tipo</th>
-						<th scope='col'>Titulo</th>
-						<th scope='col'>Contenido</th>
-						<th scope='col'>Dismissable</th>
-						<th scope='col'>Hidden</th>
-					</tr>
-				</thead>
-				<tbody className='table-group-divider'>
-					{alerts.length != 0 ? (
-						alerts.map((alert) => {
-							return (
-								<tr key={alert.id} className='clickable' onClick={() => handleEdit(alert)}>
-									<td>{alert.id}</td>
-									<td>{alert.type}</td>
-									<td>{alert.header}</td>
-									<td>{alert.content}</td>
-									<td>{alert?.dismissable ? "Si" : "No"}</td>
-									<td>{alert?.hide ? "Si" : "No"}</td>
-								</tr>
-							);
-						})
-					) : (
-						<tr>
-							<td colSpan={6}>No hay alertas</td>
-						</tr>
-					)}
-				</tbody>
-				<tfoot>
-					<tr>
-						<td colSpan={6}>
-							<span className='link-primary clickable' onClick={() => setShowCreate(true)}>
-								{" "}
-								<i className='bi bi-plus-lg'></i> Añadir Alerta
-							</span>
-						</td>
-					</tr>
-				</tfoot>
-			</Table>
-		</Container>
+		<Card className='bg-card'>
+			<CardContent className='pt-6'>
+				<AlertaModal show={showModal} setShow={setShowModal} alert={selectedAlert} />
+				<AlertCreateModal show={showCreate} setShow={setShowCreate} />
+				<Table>
+					<TableHeader>
+						<TableRow>
+							<TableHead>ID</TableHead>
+							<TableHead>Tipo</TableHead>
+							<TableHead>Titulo</TableHead>
+							<TableHead>Contenido</TableHead>
+							<TableHead>Dismissable</TableHead>
+							<TableHead>Hidden</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{alerts.length != 0 ? (
+							alerts.map((alert) => {
+								return (
+									<TableRow key={alert.id} className='cursor-pointer hover:bg-muted/50' onClick={() => handleEdit(alert)}>
+										<TableCell>{alert.id}</TableCell>
+										<TableCell>{alert.type}</TableCell>
+										<TableCell>{alert.header}</TableCell>
+										<TableCell>{alert.content}</TableCell>
+										<TableCell>{alert?.dismissable ? "Si" : "No"}</TableCell>
+										<TableCell>{alert?.hide ? "Si" : "No"}</TableCell>
+									</TableRow>
+								);
+							})
+						) : (
+							<TableRow>
+								<TableCell colSpan={6} className='text-center'>
+									No hay alertas
+								</TableCell>
+							</TableRow>
+						)}
+					</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TableCell colSpan={6}>
+								<span className='text-primary cursor-pointer hover:underline' onClick={() => setShowCreate(true)}>
+									<Plus className='inline h-4 w-4 mr-1' /> Añadir Alerta
+								</span>
+							</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</CardContent>
+		</Card>
 	);
 }

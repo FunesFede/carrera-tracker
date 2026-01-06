@@ -6,7 +6,9 @@ import { sendEmailVerification, signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 
 import { toast } from "react-toastify";
-import { Button, Dropdown, DropdownButton, DropdownToggle } from "react-bootstrap";
+import { User, Settings, Mail, MailCheck, MailWarning, LogOut, LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function Profile({ setAsignaturas }) {
 	const user = useContext(UserStateContext);
@@ -31,44 +33,40 @@ export default function Profile({ setAsignaturas }) {
 	};
 
 	return (
-		<DropdownButton
-			variant='primary'
-			align='end'
-			className='ms-2 mt-2 mt-md-0'
-			title={
-				<>
-					<i className='bi bi-person-circle'></i> Perfil
-				</>
-			}
-		>
-			<Dropdown.Item disabled={!user} onClick={() => navigate("/profile/settings")}>
-				<i className='bi bi-gear-wide-connected'></i> Configuración
-			</Dropdown.Item>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant='default' size='sm' className='gap-2'>
+					<User className='h-4 w-4' />
+					Perfil
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align='end'>
+				<DropdownMenuItem disabled={!user} onClick={() => navigate("/profile/settings")}>
+					<Settings className='mr-2 h-4 w-4' />
+					Configuración
+				</DropdownMenuItem>
 
-			<Dropdown.Item disabled={!user || user?.emailVerified} onClick={handleVerifiacionEmail}>
-				{user ? (
-					user.emailVerified ? (
-						<i className='bi bi-envelope-check-fill'></i>
+				<DropdownMenuItem disabled={!user || user?.emailVerified} onClick={handleVerifiacionEmail}>
+					{user ? user.emailVerified ? <MailCheck className='mr-2 h-4 w-4' /> : <MailWarning className='mr-2 h-4 w-4' /> : <Mail className='mr-2 h-4 w-4' />}
+					Verificación Email {user ? (user.emailVerified ? "(Verificado)" : "(No verificado)") : ""}
+				</DropdownMenuItem>
+
+				<DropdownMenuSeparator />
+
+				<DropdownMenuItem onClick={handleCerrarSession}>
+					{user ? (
+						<>
+							<LogOut className='mr-2 h-4 w-4' />
+							Cerrar Sesión
+						</>
 					) : (
-						<i className='bi bi-envelope-exclamation-fill'></i>
-					)
-				) : (
-					<i className='bi bi-envelope-at-fill'></i>
-				)}{" "}
-				Verificación Email {user ? (user.emailVerified ? "(Verificado)" : "(No verificado)") : ""}
-			</Dropdown.Item>
-			<Dropdown.Divider />
-			<Dropdown.Item onClick={handleCerrarSession}>
-				{user ? (
-					<>
-						<i className='bi bi-box-arrow-in-left'></i> Cerrar Sesión
-					</>
-				) : (
-					<>
-						<i className='bi bi-box-arrow-in-right'></i> Iniciar Sesión
-					</>
-				)}
-			</Dropdown.Item>
-		</DropdownButton>
+						<>
+							<LogIn className='mr-2 h-4 w-4' />
+							Iniciar Sesión
+						</>
+					)}
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 }

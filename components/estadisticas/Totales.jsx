@@ -1,50 +1,51 @@
-import React, { useEffect, useState } from "react";
 import asignaturas from "../../data/asignaturas.json";
 
 import GraficoAvance from "./GraficoAvance";
-import Container from "react-bootstrap/Container";
-import { Alert, Card, Col, Row } from "react-bootstrap";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent } from "@/components/ui/card";
+import { Percent, Archive, Hourglass, Info } from "lucide-react";
 
 export default function EstadisticasC({ regularizadas, aprobadas, regularizadasYAprobadas }) {
 	return (
-		<Container fluid className='text-white'>
-			<Alert variant='info' dismissible className='mx-2'>
-				<div className='text-start'>
-					<i className='bi bi-info-circle-fill'></i> Los totales y porcentajes solo toman en cuenta 7 electivas.
-				</div>
+		<div className='space-y-4'>
+			<Alert className='bg-blue-300 dark:bg-blue-700'>
+				<Info className='h-4 w-4' />
+				<AlertDescription>Los totales y porcentajes solo toman en cuenta 7 electivas.</AlertDescription>
 			</Alert>
 
-			<Row className='g-3 p-2 user-select-none'>
-				<Col md={8}>
+			<div className='grid grid-cols-1 md:grid-cols-12 gap-4'>
+				<div className='md:col-span-8'>
 					<GraficoAvance />
-				</Col>
+				</div>
 
-				<Col md={4} className='d-flex flex-column gap-3'>
-					<Card className='bg-info bg-gradient bg-opacity-75 text-white'>
-						<Card.Body className='text-center'>
-							<i className='bi bi-percent fs-1'></i>
-							<h3 className='mt-2 mb-0'>%{((aprobadas.length * 100) / (asignaturas.filter((a) => a.tipo == "Obligatoria").length + 7)).toFixed(2)}</h3>
-							<p className='mb-0'>Completado</p>
-						</Card.Body>
+				<div className='md:col-span-4 flex flex-col gap-3'>
+					<Card className='bg-blue-200 dark:bg-blue-950/30 border-blue-300 dark:border-blue-800'>
+						<CardContent className='text-center pt-6 pb-6'>
+							<Percent className='h-10 w-10 mx-auto text-blue-600 dark:text-blue-400' />
+							<p className='mt-3 mb-1 text-2xl font-semibold'>
+								{((aprobadas.length * 100) / (asignaturas.filter((a) => a.tipo == "Obligatoria").length + 7)).toFixed(2)}%
+							</p>
+							<p className='mb-0 text-sm text-muted-foreground'>Completado</p>
+						</CardContent>
 					</Card>
 
-					<Card className='bg-secondary bg-gradient text-white'>
-						<Card.Body className='text-center'>
-							<i className='bi bi-archive fs-1'></i>
-							<h3 className='mt-2 mb-0'>{regularizadasYAprobadas.size}</h3>
-							<p className='mb-0'>Total Cursadas</p>
-						</Card.Body>
+					<Card className='bg-slate-200 dark:bg-slate-900/30 border-slate-300 dark:border-slate-700'>
+						<CardContent className='text-center pt-6 pb-6'>
+							<Archive className='h-10 w-10 mx-auto text-slate-600 dark:text-slate-400' />
+							<p className='mt-3 mb-1 text-2xl font-semibold text-slate-700 dark:text-slate-300'>{regularizadasYAprobadas.size}</p>
+							<p className='mb-0 text-sm text-muted-foreground'>Total Cursadas</p>
+						</CardContent>
 					</Card>
 
-					<Card className='bg-warning bg-gradient text-white'>
-						<Card.Body className='text-center'>
-							<i className='bi bi-hourglass-split fs-1'></i>
-							<h3 className='mt-2 mb-0'>{regularizadas.length}</h3>
-							<p className='mb-0'>Asignaturas Regularizadas</p>
-						</Card.Body>
+					<Card className='bg-amber-200 dark:bg-amber-950/30 border-amber-300 dark:border-amber-800'>
+						<CardContent className='text-center pt-6 pb-6'>
+							<Hourglass className='h-10 w-10 mx-auto text-amber-600 dark:text-amber-400' />
+							<p className='mt-3 mb-1 text-2xl font-semibold text-amber-700 dark:text-amber-300'>{regularizadas.length}</p>
+							<p className='mb-0 text-sm text-muted-foreground'>Asignaturas Regularizadas</p>
+						</CardContent>
 					</Card>
-				</Col>
-			</Row>
-		</Container>
+				</div>
+			</div>
+		</div>
 	);
 }

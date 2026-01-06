@@ -10,16 +10,11 @@ import { esCursable, esHecha } from "../utils/asignaturasHelpers.js";
 import SetNotaModal from "../components/modals/SetNotaModal.jsx";
 import NotasContext from "../utils/contexts/NotasContext.js";
 
-import Breadcrumb from "react-bootstrap/Breadcrumb";
-import BreadcrumbItem from "react-bootstrap/BreadcrumbItem";
-import Card from "react-bootstrap/Card";
-import ListGroup from "react-bootstrap/ListGroup";
-import Button from "react-bootstrap/Button";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import { Stack } from "react-bootstrap";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Check, Hourglass, Unlock, Lock, ArrowLeftRight, Link2, Pen, FilePlus, ArrowLeft } from "lucide-react";
 
 export default function AsignaturaInfo() {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -70,25 +65,25 @@ export default function AsignaturaInfo() {
 				if (aprobada)
 					return (
 						<span className='text-success'>
-							<i className='bi bi-check-lg'></i> Aprobada
+							<Check className='inline w-4 h-4 mr-1' /> Aprobada
 						</span>
 					);
 				else
 					return (
 						<span className='text-warning'>
-							<i className='bi bi-hourglass'></i> Regularizada
+							<Hourglass className='inline w-4 h-4 mr-1' /> Regularizada
 						</span>
 					);
 			} else
 				return (
 					<span>
-						<i className='bi bi-unlock-fill'></i> Cursable
+						<Unlock className='inline w-4 h-4 mr-1' /> Cursable
 					</span>
 				);
 		} else
 			return (
 				<span className='text-danger'>
-					<i className='bi bi-lock-fill'></i> No Cursable
+					<Lock className='inline w-4 h-4 mr-1' /> No Cursable
 				</span>
 			);
 	};
@@ -127,153 +122,153 @@ export default function AsignaturaInfo() {
 		<>
 			<SetNotaModal show={showModal} setShow={setShowModal} aNota={nota} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
 
-			<Container fluid className='d-flex flex-column flex-grow-1 justify-content-center my-4'>
-				<Container fluid className='w-responsive'>
-					<Breadcrumb aria-label='breadcrumb'>
-						<NavLink className='breadcrumb-item link-underline link-underline-opacity-0' to='/'>
-							Home
-						</NavLink>
-						<BreadcrumbItem active>Asignaturas</BreadcrumbItem>
-						<BreadcrumbItem active>{asignatura.nombre}</BreadcrumbItem>
+			<div className='flex flex-col flex-grow justify-center my-4'>
+				<div className='w-responsive mx-auto px-4'>
+					<Breadcrumb className='mb-4'>
+						<BreadcrumbList>
+							<BreadcrumbItem>
+								<NavLink className='hover:underline' to='/'>
+									Home
+								</NavLink>
+							</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>Asignaturas</BreadcrumbItem>
+							<BreadcrumbSeparator />
+							<BreadcrumbItem>{asignatura.nombre}</BreadcrumbItem>
+						</BreadcrumbList>
 					</Breadcrumb>
 
-					<Card className='bg-dark-custom'>
-						<Card.Body>
-							<Card.Title className='mb-0 pb-0'>
-								<h2>{asignatura.nombre}</h2>
-								<Card.Subtitle>
-									<span className='fw-bold'>Año: </span> {handleAnio()},<span className='fw-bold'> Tipo: </span>
-									{asignatura.tipo},<span className='fw-bold'> Duración: </span>
-									{asignatura.duracion},<span className='fw-bold'> Acrónimo: </span>
-									{asignatura.acronimo}
-								</Card.Subtitle>
-							</Card.Title>
-							<Card.Text as='div' className='mt-1'>
-								<ListGroup variant='flush'>
-									<ListGroupItem key='1' className='bg-dark-custom'>
-										<span className='fw-bold'>Estado:</span> {handleEstado()}{" "}
-										{nota ? (
-											<>
-												{" "}
-												| <span className='fw-bold'>Nota final:</span> {nota}{" "}
-												<span className='clickable link link-primary' onClick={handleAddNota} id={asignatura.acronimo + "NotaModal"}>
-													<i className='bi bi-pen'></i>
-												</span>
-											</>
-										) : aprobada ? (
-											<>
-												{" "}
-												| <span className='fw-bold'>Nota final:</span>{" "}
-												<span className='clickable link-primary link-underline link-underline-opacity-0' onClick={handleAddNota}>
-													<i className='bi bi-file-earmark-plus'></i> Añadir
-												</span>
-											</>
-										) : (
-											""
-										)}
-									</ListGroupItem>
-									<ListGroupItem key='2' className='bg-dark-custom'>
-										<div className='fw-bold'>
-											<span>
-												<i className='bi bi-arrow-left-right'></i> Correlativas
-											</span>
-										</div>
-										<div>
-											<span className='fw-semibold'>Regularizadas:</span>{" "}
-											{asignatura.regularizadas.length > 0
-												? asignRegularizadas.map((a, idx) => (
-														<React.Fragment key={a.acronimo}>
-															<span className={handleColor(a)}>{a.nombre}</span>
-															{idx < asignRegularizadas.length - 1 ? ", " : ""}
-														</React.Fragment>
-												  ))
-												: "No requiere asignaturas regularizadas"}
-										</div>
-										<div>
-											<span className='fw-semibold'>Aprobadas:</span>{" "}
-											{asignatura.aprobadas.length > 0
-												? asignAprobadas.map((a, idx) => (
-														<React.Fragment key={a.acronimo}>
-															<span className={handleColor(a)}>{a.nombre}</span>
-															{idx < asignAprobadas.length - 1 ? ", " : ""}
-														</React.Fragment>
-												  ))
-												: "No requiere asignaturas aprobadas"}
-										</div>
-									</ListGroupItem>
-									<ListGroupItem key='4' className='bg-dark-custom'>
-										<div className='fw-bold'>
-											<span>
-												<i className='bi bi-link-45deg'></i> Dependiente En
-											</span>
-										</div>
-										<div>
-											<span className='fw-semibold'>Como regularizada:</span>{" "}
-											{correlativaFuturaRegular.length > 0
-												? correlativaFuturaRegular.map((a, idx) => (
-														<React.Fragment key={a.acronimo}>
-															<span className={handleColor(a)}>{a.nombre}</span>
-															{idx < correlativaFuturaRegular.length - 1 ? ", " : ""}
-														</React.Fragment>
-												  ))
-												: "No es dependiente como regular"}
-										</div>
-										<div>
-											<span className='fw-semibold'>Como aprobada:</span>{" "}
-											{correlativaFuturaAprobada.length > 0
-												? correlativaFuturaAprobada.map((a, idx) => (
-														<React.Fragment key={a.acronimo}>
-															<span className={handleColor(a)}>{a.nombre}</span>
-															{idx < correlativaFuturaAprobada.length - 1 ? ", " : ""}
-														</React.Fragment>
-												  ))
-												: "No es dependiente como aprobada"}
-										</div>
-									</ListGroupItem>
-								</ListGroup>
-							</Card.Text>
-							<Card.Footer className='bg-dark-custom'>
-								<Stack gap={2}>
-									<Form.Select
-										onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
-										disabled={asignAprobadas.length == 0 && asignRegularizadas.length == 0}
-										defaultValue='-1'
-									>
-										<option hidden value='-1'>
-											{asignAprobadas.length == 0 && asignRegularizadas.length == 0 ? "No hay correlativas" : "Visitar correlativa"}
-										</option>
-										{[...asignRegularizadas, ...asignAprobadas]
-											.toSorted((a, b) => a.nombre.localeCompare(b.nombre))
-											.map((asign, index) => (
-												<option key={index} value={asign.acronimo}>
-													{asign.nombre}
-												</option>
-											))}
-									</Form.Select>
-									<Form.Select
-										onChange={(e) => (e.target.value != "-1" ? navigate(`/asignaturas/${e.target.value}`) : "")}
-										disabled={correlativaFutura.length == 0}
-										defaultValue='-1'
-									>
-										<option hidden value='-1'>
-											{correlativaFutura.length == 0 ? "No hay dependientes" : "Visitar Dependiente"}
-										</option>
-										{correlativaFutura.map((asign, index) => (
-											<option key={index} value={asign.acronimo}>
+					<Card>
+						<CardHeader>
+							<CardTitle className='text-2xl'>{asignatura.nombre}</CardTitle>
+							<CardDescription>
+								<span className='font-bold'>Año: </span> {handleAnio()},<span className='font-bold'> Tipo: </span>
+								{asignatura.tipo},<span className='font-bold'> Duración: </span>
+								{asignatura.duracion},<span className='font-bold'> Acrónimo: </span>
+								{asignatura.acronimo}
+							</CardDescription>
+						</CardHeader>
+						<CardContent className='space-y-4'>
+							<div className=' border-t border-border pt-4'>
+								<span className='font-bold'>Estado:</span> {handleEstado()}{" "}
+								{nota ? (
+									<>
+										{" "}
+										| <span className='font-bold'>Nota final:</span> {nota}{" "}
+										<span className='cursor-pointer text-primary hover:underline' onClick={handleAddNota} id={asignatura.acronimo + "NotaModal"}>
+											<Pen className='inline w-4 h-4' />
+										</span>
+									</>
+								) : aprobada ? (
+									<>
+										{" "}
+										| <span className='font-bold'>Nota final:</span>{" "}
+										<span className='cursor-pointer text-primary hover:underline' onClick={handleAddNota}>
+											<FilePlus className='inline w-4 h-4 mr-1' /> Añadir
+										</span>
+									</>
+								) : (
+									""
+								)}
+							</div>
+							<div className='border-t border-border pt-4'>
+								<div className='font-bold'>
+									<span>
+										<ArrowLeftRight className='inline w-4 h-4 mr-1' /> Correlativas
+									</span>
+								</div>
+								<div>
+									<span className='font-semibold'>Regularizadas:</span>{" "}
+									{asignatura.regularizadas.length > 0
+										? asignRegularizadas.map((a, idx) => (
+												<React.Fragment key={a.acronimo}>
+													<span className={handleColor(a)}>{a.nombre}</span>
+													{idx < asignRegularizadas.length - 1 ? ", " : ""}
+												</React.Fragment>
+										  ))
+										: "No requiere asignaturas regularizadas"}
+								</div>
+								<div>
+									<span className='font-semibold'>Aprobadas:</span>{" "}
+									{asignatura.aprobadas.length > 0
+										? asignAprobadas.map((a, idx) => (
+												<React.Fragment key={a.acronimo}>
+													<span className={handleColor(a)}>{a.nombre}</span>
+													{idx < asignAprobadas.length - 1 ? ", " : ""}
+												</React.Fragment>
+										  ))
+										: "No requiere asignaturas aprobadas"}
+								</div>
+							</div>
+							<div className='border-t border-border pt-4'>
+								<div className='font-bold'>
+									<span>
+										<Link2 className='inline w-4 h-4 mr-1' /> Dependiente En
+									</span>
+								</div>
+								<div>
+									<span className='font-semibold'>Como regularizada:</span>{" "}
+									{correlativaFuturaRegular.length > 0
+										? correlativaFuturaRegular.map((a, idx) => (
+												<React.Fragment key={a.acronimo}>
+													<span className={handleColor(a)}>{a.nombre}</span>
+													{idx < correlativaFuturaRegular.length - 1 ? ", " : ""}
+												</React.Fragment>
+										  ))
+										: "No es dependiente como regular"}
+								</div>
+								<div>
+									<span className='font-semibold'>Como aprobada:</span>{" "}
+									{correlativaFuturaAprobada.length > 0
+										? correlativaFuturaAprobada.map((a, idx) => (
+												<React.Fragment key={a.acronimo}>
+													<span className={handleColor(a)}>{a.nombre}</span>
+													{idx < correlativaFuturaAprobada.length - 1 ? ", " : ""}
+												</React.Fragment>
+										  ))
+										: "No es dependiente como aprobada"}
+								</div>
+							</div>
+						</CardContent>
+						<CardFooter className='flex flex-col gap-2'>
+							<Select
+								onValueChange={(value) => value != "-1" && navigate(`/asignaturas/${value}`)}
+								disabled={asignAprobadas.length == 0 && asignRegularizadas.length == 0}
+								defaultValue='-1'
+							>
+								<SelectTrigger>
+									<SelectValue>{asignAprobadas.length == 0 && asignRegularizadas.length == 0 ? "No hay correlativas" : "Visitar correlativa"}</SelectValue>
+								</SelectTrigger>
+								<SelectContent>
+									{[...asignRegularizadas, ...asignAprobadas]
+										.toSorted((a, b) => a.nombre.localeCompare(b.nombre))
+										.map((asign, index) => (
+											<SelectItem key={index} value={asign.acronimo}>
 												{asign.nombre}
-											</option>
+											</SelectItem>
 										))}
-									</Form.Select>
-								</Stack>
+								</SelectContent>
+							</Select>
+							<Select onValueChange={(value) => value != "-1" && navigate(`/asignaturas/${value}`)} disabled={correlativaFutura.length == 0} defaultValue='-1'>
+								<SelectTrigger>
+									<SelectValue>{correlativaFutura.length == 0 ? "No hay dependientes" : "Visitar Dependiente"}</SelectValue>
+								</SelectTrigger>
+								<SelectContent>
+									{correlativaFutura.map((asign, index) => (
+										<SelectItem key={index} value={asign.acronimo}>
+											{asign.nombre}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 
-								<Button variant='primary' className='me-3 mt-3' onClick={() => navigate(-1)}>
-									<i className='bi bi-arrow-left'></i> Volver
-								</Button>
-							</Card.Footer>
-						</Card.Body>
+							<Button onClick={() => navigate(-1)} className='w-full'>
+								<ArrowLeft className='inline w-4 h-4 mr-2' /> Volver
+							</Button>
+						</CardFooter>
 					</Card>
-				</Container>
-			</Container>
+				</div>
+			</div>
 		</>
 	);
 }

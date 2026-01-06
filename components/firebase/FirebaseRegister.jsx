@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { User, Mail, Lock } from "lucide-react";
+import { Spinner } from "../Spinner";
 
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -62,83 +66,81 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(handleAuth)}>
-			<div className='mb-3'>
-				<img src='/images/logo_2.png' alt='Logo UTN' width={35} height={40} draggable={false} />
+		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
+			<div className='mb-3 text-center'>
+				<img src='/images/logo_2.png' className='grayscale dark:grayscale-0' alt='Logo UTN' width={35} height={40} draggable={false} />
 				<h3>¡Bienvenido a tu carrera tracker!</h3>
 				<h4>Por favor, completá tu registro</h4>
 			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-person-badge'></i> Nombre
-						</>
-					}
-				>
-					<Form.Control isInvalid={errors.displayName} placeholder='Gabriel' autoComplete='name' id='name' type='text' {...register("displayName", { required: true })} />
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='name'>
+					<User className='inline w-4 h-4 mr-1' /> Nombre
+				</Label>
+				<Input
+					id='name'
+					type='text'
+					placeholder='Gabriel'
+					autoComplete='name'
+					className={errors.displayName ? "border-destructive" : ""}
+					{...register("displayName", { required: true })}
+				/>
+				{errors.displayName && <p className='text-sm text-destructive'>Un nombre es requerido</p>}
+			</div>
 
-					{errors.displayName && <Form.Control.Feedback type='invalid'>Un nombre es requerido</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='email'>
+					<Mail className='inline w-4 h-4 mr-1' /> Email
+				</Label>
+				<Input
+					id='email'
+					type='email'
+					placeholder='gabriel@example.com'
+					autoComplete='username'
+					className={errors.email ? "border-destructive" : ""}
+					{...register("email", { required: true })}
+				/>
+				{errors.email && <p className='text-sm text-destructive'>Un email es requerido</p>}
+			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-envelope-at-fill'></i> Email
-						</>
-					}
-				>
-					<Form.Control isInvalid={errors.email} placeholder='gabriel@example.com' autoComplete='username' type='email' {...register("email", { required: true })} />
-					{errors.email && <Form.Control.Feedback type='invalid'>Un email es requerido</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='pass'>
+					<Lock className='inline w-4 h-4 mr-1' /> Contraseña
+				</Label>
+				<Input
+					id='pass'
+					type='password'
+					placeholder='*****'
+					autoComplete='current-password'
+					className={errors.password ? "border-destructive" : ""}
+					{...register("password", { required: true })}
+				/>
+				{errors.password && <p className='text-sm text-destructive'>Una contraseña es requerida</p>}
+			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-eye-slash-fill'></i> Contraseña
-						</>
-					}
-				>
-					<Form.Control
-						isInvalid={errors.password}
-						placeholder='*****'
-						id='pass'
-						autoComplete='current-password'
-						type='password'
-						{...register("password", { required: true })}
-					/>
-					{errors.password && <Form.Control.Feedback type='invalid'>Una contraseña es requerida</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
-
-			<Container className='mb-3 d-flex justify-content-center'>
+			<div className='flex justify-center mb-3'>
 				<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
-			</Container>
+			</div>
 
-			<Button variant='primary' type='submit' disabled={loading || !recaptchaValid}>
+			<Button type='submit' disabled={loading || !recaptchaValid} className='w-full'>
 				{loading ? (
 					<>
-						<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-						<span role='status'> Cargando...</span>
+						<Spinner className='mr-2' />
+						Cargando...
 					</>
 				) : (
 					<>
-						<i className='bi bi-person-plus-fill'></i> Registrarse
+						<User className='inline w-4 h-4 mr-2' /> Registrarse
 					</>
 				)}
 			</Button>
-			<p className='text-secondary mt-2'>
+			<p className='text-muted-foreground mt-2 text-center'>
 				¿Ya tenés una cuenta?{" "}
-				<NavLink className='link-underline link-underline-opacity-0' to='/login'>
+				<NavLink className='text-primary hover:underline' to='/login'>
 					Iniciá sesión
 				</NavLink>
 			</p>
-		</Form>
+		</form>
 	);
 };
 

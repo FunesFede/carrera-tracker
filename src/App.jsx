@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
 import { ToastContainer, Slide } from "react-toastify";
 import { useState, useEffect } from "react";
+import { AlertTriangle, Info } from "lucide-react";
 
 import Home from "../pages/Home.jsx";
 import AsignaturaInfo from "../pages/AsignaturaInfo.jsx";
@@ -28,7 +29,8 @@ import { getNotas } from "../utils/firebase/notas.js";
 import PasswordlessLogin from "../pages/auth/PasswordlessLoginPage.jsx";
 import PasswordlessLoginCallback from "../pages/auth/PasswordlessLoginCallback.jsx";
 import { getAlertas } from "../utils/firebase/alerts.js";
-import { Alert, Container } from "react-bootstrap";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Admin from "../pages/admin/Admin.jsx";
 
 function App() {
@@ -86,32 +88,28 @@ function App() {
 				<AsignaturasContext.Provider value={asignaturas}>
 					<NotasContext.Provider value={notas}>
 						<BrowserRouter>
-							<div className='d-flex flex-column min-vh-100'>
+							<div className='flex flex-col min-h-screen'>
 								<Navbar setAsignaturas={setAsignaturas} />
-								<Container fluid className='m-0 mt-3'>
-									{alerts.length != 0 ? (
-										alerts.map((alert) => {
-											if (alert?.hide) {
-												return;
-											}
-											return (
-												<Alert dismissible={alert?.dismissable || false} key={alert.id} variant={alert?.type || "info"} className='text-start m-0 mb-2'>
-													<Alert.Heading>
-														{alert?.type == "warning" || alert?.type == "danger" ? (
-															<i className='bi bi-exclamation-triangle'></i>
-														) : (
-															<i className='bi bi-info-circle'></i>
-														)}{" "}
-														{alert?.header || "Información Importante"}
-													</Alert.Heading>
-													<p className='mb-0'>{alert.content}</p>
-												</Alert>
-											);
-										})
-									) : (
-										<></>
+								<main className='container mx-auto px-4 mt-3'>
+									{alerts.length !== 0 && (
+										<div className='space-y-2 mb-4'>
+											{alerts.map((alert) => {
+												if (alert?.hide) return null;
+
+												const variant = alert?.type === "danger" ? "destructive" : "default";
+												const Icon = alert?.type === "warning" || alert?.type === "danger" ? AlertTriangle : Info;
+
+												return (
+													<Alert key={alert.id} variant={variant}>
+														<Icon className='h-4 w-4' />
+														<AlertTitle>{alert?.header || "Información Importante"}</AlertTitle>
+														<AlertDescription>{alert.content}</AlertDescription>
+													</Alert>
+												);
+											})}
+										</div>
 									)}
-								</Container>
+								</main>
 								<Routes>
 									<Route path='/login' element={<Login signInSuccessFunc={handleSignInSuccess} />} />
 									<Route path='/register' element={<Register signInSuccessFunc={handleSignInSuccess} />} />
@@ -183,17 +181,17 @@ function App() {
 				</AsignaturasContext.Provider>
 			</UserStateContext.Provider>
 
-			<div className='offcanvas offcanvas-start' tabIndex='-1' id='GuiaBotones' aria-labelledby='GuiaBotones'>
-				<div className='offcanvas-header'>
-					<h5 className='offcanvas-title' id='offcanvasGuiaBotonesLabel'>
-						Guía Botones e Iconos
-					</h5>
-					<button type='button' className='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>
-				</div>
-				<div className='offcanvas-body'>
-					<InfoBanner />
-				</div>
-			</div>
+			<Sheet>
+				<SheetTrigger className='hidden'>Open</SheetTrigger>
+				<SheetContent side='left'>
+					<SheetHeader>
+						<SheetTitle>Guía Botones e Iconos</SheetTitle>
+					</SheetHeader>
+					<div className='mt-4'>
+						<InfoBanner />
+					</div>
+				</SheetContent>
+			</Sheet>
 		</>
 	);
 }

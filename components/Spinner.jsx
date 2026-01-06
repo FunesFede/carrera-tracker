@@ -1,15 +1,15 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Spinner from "react-bootstrap/Spinner";
+import { Loader2 } from "lucide-react";
+
+export function Spinner({ className = "" }) {
+	return <Loader2 className={`h-4 w-4 animate-spin ${className}`} />;
+}
 
 export default function SpinnerR() {
 	return (
-		<Container fluid className='py-3 min-vh-100 bg-dark text-white'>
-			<Container className='position-absolute top-50 start-50 translate-middle'>
-				<Spinner animation='border' role='status'>
-					<span className='visually-hidden'>Loading...</span>
-				</Spinner>
-			</Container>
-		</Container>
+		<div className='flex items-center justify-center min-h-screen bg-background'>
+			<Loader2 className='h-8 w-8 animate-spin text-primary' />
+			<span className='sr-only'>Loading...</span>
+		</div>
 	);
 }

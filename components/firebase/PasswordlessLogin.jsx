@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "react-toastify";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Mail, Smile, Link as LinkIcon } from "lucide-react";
+import { Spinner } from "../Spinner";
 
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -103,81 +107,75 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(handleAuth)}>
+		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
 			<div className='mb-3'>
 				<h3>
 					{" "}
-					<i className='bi bi-emoji-smile-fill'></i> ¡Hola! Que bueno tenerte de nuevo
+					<Smile className='inline w-5 h-5 mr-1' /> ¡Hola! Que bueno tenerte de nuevo
 				</h3>
 				<h4>{signIn ? "Procesando código..." : "Te vamos a enviar un email para que inicies sesión"}</h4>
 			</div>
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-envelope-at-fill'></i> Email
-						</>
-					}
-				>
-					<Form.Control
-						disabled={signIn || done}
-						value={emailForSignIn}
-						id='email'
-						isInvalid={errors.email}
-						autoComplete='username'
-						type='email'
-						placeholder='mail@example.com'
-						{...register("email", { required: true })}
-					/>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='email'>
+					<Mail className='inline w-4 h-4 mr-1' /> Email
+				</Label>
+				<Input
+					id='email'
+					type='email'
+					placeholder='mail@example.com'
+					autoComplete='username'
+					disabled={signIn || done}
+					value={emailForSignIn}
+					className={errors.email ? "border-destructive" : ""}
+					{...register("email", { required: true })}
+				/>
+				{errors.email && <p className='text-sm text-destructive'>Un email es requerido</p>}
+			</div>
 
-					{errors.email && <Form.Control.Feedback type='invalid'>Un email es requerido</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
-
-			<Container className='mb-3 d-flex justify-content-center'>
+			<div className='flex justify-center mb-3'>
 				<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
-			</Container>
+			</div>
 
-			<Button variant='primary' type='submit' disabled={loading || done || signIn || !recaptchaValid}>
+			<Button type='submit' disabled={loading || done || signIn || !recaptchaValid} className='w-full'>
 				{loading || signIn ? (
 					<>
-						<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-						<span role='status'> Cargando...</span>
+						<Spinner className='mr-2' />
+						Cargando...
 					</>
 				) : (
 					<>
-						<i className='bi bi-link'></i> Enviar Link
+						<LinkIcon className='inline w-4 h-4 mr-2' /> Enviar Link
 					</>
 				)}
 			</Button>
 			{signIn ? (
-				<p className='text-secondary mt-2'>
+				<p className='text-muted-foreground mt-2 text-center'>
 					¿El login no funcionó?{" "}
-					<NavLink className='link-underline link-underline-opacity-0' to='/login/passwordless'>
+					<NavLink className='text-primary hover:underline' to='/login/passwordless'>
 						Intentá de nuevo
 					</NavLink>{" "}
 					o{" "}
-					<NavLink className='link-underline link-underline-opacity-0' to='/login'>
+					<NavLink className='text-primary hover:underline' to='/login'>
 						probá otro método
 					</NavLink>
 				</p>
 			) : (
 				<>
-					<p className='text-secondary mt-2 mb-0'>
+					<p className='text-muted-foreground mt-2 mb-0 text-center'>
 						¿Preferís usar tu contraseña?{" "}
-						<NavLink className='link-underline link-underline-opacity-0' to='/login'>
+						<NavLink className='text-primary hover:underline' to='/login'>
 							Iniciar sesión con contraseña
 						</NavLink>
 					</p>
-					<p className='text-secondary mt-1'>
+					<p className='text-muted-foreground mt-1 text-center'>
 						¿No tenés una cuenta?{" "}
-						<NavLink className='link-underline link-underline-opacity-0' to='/register'>
+						<NavLink className='text-primary hover:underline' to='/register'>
 							Registrate
 						</NavLink>
 					</p>
 				</>
 			)}
-		</Form>
+		</form>
 	);
 };
 

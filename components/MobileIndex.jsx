@@ -1,31 +1,40 @@
 import React from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { HandMetal } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function MobileIndex() {
 	return (
-		<Container fluid className='show-mobile mb-3 container-rounded-dark p-2'>
+		<div className='show-mobile mb-3 container-rounded-dark p-2'>
 			<h4 className='text-start mx-2'>
-				<i className='bi bi-hand-index'></i> Acceso Rápido
+				<HandMetal className='inline w-5 h-5 mr-1' /> Acceso Rápido
 			</h4>
-			<Row className='align-items-center'>
-				<Col>
-					<a href='#primero' className='badge bg-gradient text-bg-secondary rounded-pill px-3 py-2 link-underline link-underline-opacity-0 m-1'>
+			<div className='flex items-center flex-wrap'>
+				<a href='#primero' className='no-underline m-1'>
+					<Badge variant='secondary' className='px-3 py-2'>
 						Primero
-					</a>
-					<a href='#segundo' className='badge text-bg-secondary rounded-pill px-3 py-2 link-underline link-underline-opacity-0 m-1'>
+					</Badge>
+				</a>
+				<a href='#segundo' className='no-underline m-1'>
+					<Badge variant='secondary' className='px-3 py-2'>
 						Segundo
-					</a>
-					<a href='#tercero' className='badge text-bg-secondary rounded-pill px-3 py-2 link-underline link-underline-opacity-0 m-1'>
+					</Badge>
+				</a>
+				<a href='#tercero' className='no-underline m-1'>
+					<Badge variant='secondary' className='px-3 py-2'>
 						Tercero
-					</a>
-					<a href='#cuarto' className='badge text-bg-secondary rounded-pill px-3 py-2 link-underline link-underline-opacity-0 m-1'>
+					</Badge>
+				</a>
+				<a href='#cuarto' className='no-underline m-1'>
+					<Badge variant='secondary' className='px-3 py-2'>
 						Cuarto
-					</a>
-					<a href='#quinto' className='badge text-bg-secondary rounded-pill px-3 py-2 link-underline link-underline-opacity-0 m-1'>
+					</Badge>
+				</a>
+				<a href='#quinto' className='no-underline m-1'>
+					<Badge variant='secondary' className='px-3 py-2'>
 						Quinto
-					</a>
-				</Col>
-			</Row>
-		</Container>
+					</Badge>
+				</a>
+			</div>
+		</div>
 	);
 }

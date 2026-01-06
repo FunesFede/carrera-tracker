@@ -6,7 +6,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import UserStateContext from "../../utils/contexts/UserContext";
-import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { User, Mail, Camera, Save } from "lucide-react";
+import { Spinner } from "../Spinner";
 
 const FirebaseUpdateProfile = () => {
 	const user = useContext(UserStateContext);
@@ -40,64 +44,49 @@ const FirebaseUpdateProfile = () => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(handleUpdate)}>
+		<form onSubmit={handleSubmit(handleUpdate)} className='space-y-4'>
 			<div className='mb-3'>
 				<h3>
 					{" "}
-					<i className='bi bi-person-circle'></i> Tu Perfil
+					<User className='inline w-5 h-5 mr-1' /> Tu Perfil
 				</h3>
 				<h5>Configurá tu perfil a tu gusto</h5>
 			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-envelope-at-fill'></i> Email {user.emailVerified ? "(Verificado)" : "(No verificado)"}
-						</>
-					}
-				>
-					<Form.Control autoComplete='username' disabled placeholder='fede@ffede.ar' id='email' type='email' {...register("email")} />
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='email'>
+					<Mail className='inline w-4 h-4 mr-1' /> Email {user.emailVerified ? "(Verificado)" : "(No verificado)"}
+				</Label>
+				<Input id='email' type='email' placeholder='fede@ffede.ar' autoComplete='username' disabled {...register("email")} />
+			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-person-badge'></i> Nombre
-						</>
-					}
-				>
-					<Form.Control autoComplete='name' placeholder='Gabriel' id='name' type='text' {...register("displayName")} />
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='name'>
+					<User className='inline w-4 h-4 mr-1' /> Nombre
+				</Label>
+				<Input id='name' type='text' placeholder='Gabriel' autoComplete='name' {...register("displayName")} />
+			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-camera-fill'></i> Foto de Perfil
-						</>
-					}
-				>
-					<Form.Control disabled placeholder='https://imgur.com/i/perfil.png' id='photo' type='text' {...register("photoURL")} />
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='photo'>
+					<Camera className='inline w-4 h-4 mr-1' /> Foto de Perfil
+				</Label>
+				<Input id='photo' type='text' placeholder='https://imgur.com/i/perfil.png' disabled {...register("photoURL")} />
+			</div>
 
-			<Button variant='primary' type='submit' disabled={loading || !isDirty}>
+			<Button type='submit' disabled={loading || !isDirty} className='w-full'>
 				{loading ? (
 					<>
-						<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-						<span role='status'> Cargando...</span>
+						<Spinner className='mr-2' />
+						Cargando...
 					</>
 				) : (
 					<>
-						<i className='bi bi-save-fill'></i> Guardar Cambios
+						<Save className='inline w-4 h-4 mr-2' /> Guardar Cambios
 					</>
 				)}
 			</Button>
-		</Form>
+		</form>
 	);
 };
 
