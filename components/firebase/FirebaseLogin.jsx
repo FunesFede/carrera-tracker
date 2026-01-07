@@ -63,7 +63,7 @@ const FirebaseLogin = ({ onSignInSuccess, from }) => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleAuth)} className='space-y-6'>
+			<form onSubmit={form.handleSubmit(handleAuth)} className='space-y-4'>
 				<div className='mb-6 text-center'>
 					<h3 className='text-2xl font-semibold flex items-center justify-center gap-2'>
 						<Smile className='h-6 w-6' />
@@ -135,13 +135,13 @@ const FirebaseLogin = ({ onSignInSuccess, from }) => {
 					</NavLink>
 				</div>
 
-				<p className='text-muted-foreground mt-2 text-center text-sm'>
+				<p className='text-muted-foreground mt-2 text-center'>
 					¿Olvidaste tu contraseña?{" "}
 					<NavLink className='text-primary hover:underline' to='/login/passwordreset'>
 						Reestablecer contraseña
 					</NavLink>
 				</p>
-				<p className='text-muted-foreground text-center text-sm'>
+				<p className='text-muted-foreground text-center'>
 					¿No tenés una cuenta?{" "}
 					<NavLink className='text-primary hover:underline' to='/register'>
 						Registrate

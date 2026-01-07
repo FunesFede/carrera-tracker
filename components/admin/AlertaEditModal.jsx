@@ -15,7 +15,6 @@ import { ConfirmarAccion } from "../modals/ConfirmarAccion";
 
 export default function AlertaModal({ alert, show, setShow }) {
 	const [loading, setLoading] = useState(false);
-	console.log(alert);
 
 	const {
 		register,

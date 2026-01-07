@@ -1,13 +1,9 @@
-import { useContext, useMemo } from "react";
-import UserStateContext from "../utils/contexts/UserContext.js";
-
 import asignaturasData from "../data/asignaturas.json";
 
 import Asignatura from "../components/Asignatura.jsx";
+import { useMemo } from "react";
 
 export default function Main() {
-	const user = useContext(UserStateContext);
-
 	const asignaturasAnio = useMemo(() => {
 		const filtrar = (n) => asignaturasData.filter((a) => a.anio === n).sort((a, b) => a.nombre.localeCompare(b.nombre));
 
@@ -20,23 +16,11 @@ export default function Main() {
 		};
 	}, []);
 
-	const handleSaludo = () => {
-		const now = new Date();
-		const hora = now.getHours();
-
-		if (hora >= 6 && hora < 12) return "🌤 Buenos días";
-		if (hora >= 12 && hora < 20) return "🌄 Buenas tardes";
-		if (hora >= 20 || hora < 6) return "🌙 Buenas noches";
-		else return "👋 Hola";
-	};
-
 	return (
 		<>
 			<div className='py-4 bg-background flex flex-col flex-grow min-h-screen'>
-				<div className='container mx-auto px-4'>
-					<h3 className='text-start mb-6 text-2xl font-semibold'>
-						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
-					</h3>
+				<div className='container mx-auto'>
+					<h3 className='text-start mb-6 text-2xl font-semibold'></h3>
 
 					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4'>
 						<div className='bg-card rounded-lg p-4 border' id='primero'>

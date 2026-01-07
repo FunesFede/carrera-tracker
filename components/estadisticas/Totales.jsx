@@ -10,7 +10,7 @@ export default function EstadisticasC({ regularizadas, aprobadas, regularizadasY
 		<div className='space-y-4'>
 			<Alert className='bg-blue-200 border-blue-300 dark:bg-blue-600/30 dark:border-blue-800'>
 				<Info className='h-4 w-4' />
-				<AlertDescription>Los totales y porcentajes solo toman en cuenta 7 electivas.</AlertDescription>
+				Los totales y porcentajes solo toman en cuenta 7 electivas.
 			</Alert>
 
 			<div className='grid grid-cols-1 md:grid-cols-12 gap-4'>

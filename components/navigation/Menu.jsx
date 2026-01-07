@@ -48,7 +48,7 @@ export default function MobileNavBar({ buscar, set }) {
 
 				<div className='flex flex-col gap-4 mt-6'>
 					<NavLink
-						to='/'
+						to='/home'
 						onClick={() => setMobileMenuOpen(false)}
 						className={cn(
 							"flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",

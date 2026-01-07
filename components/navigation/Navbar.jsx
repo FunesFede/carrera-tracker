@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { toast } from "sonner";
-import { Search, Moon, Sun } from "lucide-react";
+import { Search, Moon, Sun, MoonStar, CloudSun, Rainbow } from "lucide-react";
 import { useDarkMode } from "../../utils/hooks/useDarkMode";
 
 import asignaturas from "../../data/asignaturas.json";
@@ -21,7 +21,7 @@ export default function NavbarR({ setAsignaturas }) {
 	const buscarAsignatura = (e) => {
 		e.preventDefault();
 
-		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/");
+		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/home");
 
 		if (!query.trim()) return;
 		const lowerQuery = query.toLowerCase();
@@ -35,16 +35,44 @@ export default function NavbarR({ setAsignaturas }) {
 		}
 	};
 
+	const handleSaludo = () => {
+		const now = new Date();
+		const hora = now.getHours();
+
+		if (hora >= 6 && hora < 12)
+			return (
+				<>
+					<CloudSun /> Buenos días
+				</>
+			);
+		if (hora >= 12 && hora < 20)
+			return (
+				<>
+					<Rainbow /> Buenas tardes
+				</>
+			);
+		if (hora >= 20 || hora < 6)
+			return (
+				<>
+					<MoonStar /> Buenas noches
+				</>
+			);
+		else return "👋 Hola";
+	};
+
 	return (
 		<nav className='sticky top-0 z-50 bg-background border-b px-4 py-2'>
 			<div className='container mx-auto flex items-center justify-between gap-4'>
 				<div className='flex items-center gap-2'>
 					<LinksMenu buscar={buscarAsignatura} set={setQuery} />
-
-					<NavLink to='/' className='flex items-center'>
+					<NavLink to={user ? "/home" : "/"} className='flex items-center'>
 						<img src={isDark ? "/images/logo.png" : "/images/logo-dark.png"} alt='Logo' width='100' height='30' className='inline-block' />
 					</NavLink>
 				</div>
+
+				<h4 className='hidden md:flex gap-2'>
+					{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
+				</h4>
 
 				<div className='flex items-center gap-2'>
 					<form role='search' onSubmit={buscarAsignatura} className='hidden md:flex items-center gap-2'>

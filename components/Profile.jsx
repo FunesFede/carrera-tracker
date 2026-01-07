@@ -3,9 +3,9 @@ import UserStateContext from "../utils/contexts/UserContext";
 
 import { auth } from "../firebase/config";
 import { sendEmailVerification, signOut } from "firebase/auth";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
-import { User, Settings, Mail, MailCheck, MailWarning, LogOut, LogIn } from "lucide-react";
+import { User, Settings, Mail, MailCheck, MailWarning, LogOut, LogIn, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
@@ -34,12 +34,20 @@ export default function Profile({ setAsignaturas }) {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant='default' size='sm' className='gap-2'>
-					<User className='h-4 w-4' />
-					Perfil
+			{user ? (
+				<DropdownMenuTrigger asChild>
+					<Button variant='default' size='sm' className='gap-2'>
+						<User className='h-4 w-4' />
+						Perfil
+					</Button>
+				</DropdownMenuTrigger>
+			) : (
+				<Button variant='default' size='sm' asChild>
+					<NavLink to='/login' className='gap-2'>
+						<ArrowRight className='h-4 w-4' /> Iniciar Sesión
+					</NavLink>
 				</Button>
-			</DropdownMenuTrigger>
+			)}
 			<DropdownMenuContent align='end'>
 				<DropdownMenuItem disabled={!user} onClick={() => navigate("/profile/settings")}>
 					<Settings className='mr-2 h-4 w-4' />

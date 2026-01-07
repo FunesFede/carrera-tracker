@@ -27,6 +27,10 @@ export default function AsignaturaInfo() {
 	const user = useContext(UserStateContext);
 
 	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [acrom]);
+
+	useEffect(() => {
 		const edit = Boolean(searchParams.get("edit"));
 		if (edit) {
 			handleAddNota();
@@ -64,13 +68,13 @@ export default function AsignaturaInfo() {
 			if (hecha) {
 				if (aprobada)
 					return (
-						<span className='text-success'>
+						<span className='text-green-600'>
 							<Check className='inline w-4 h-4 mr-1' /> Aprobada
 						</span>
 					);
 				else
 					return (
-						<span className='text-warning'>
+						<span className='text-yellow-600 dark:text-yellow-500'>
 							<Hourglass className='inline w-4 h-4 mr-1' /> Regularizada
 						</span>
 					);
@@ -82,7 +86,7 @@ export default function AsignaturaInfo() {
 				);
 		} else
 			return (
-				<span className='text-danger'>
+				<span className='text-red-600'>
 					<Lock className='inline w-4 h-4 mr-1' /> No Cursable
 				</span>
 			);
@@ -91,10 +95,10 @@ export default function AsignaturaInfo() {
 	const handleColor = (asig) => {
 		if (esCursable(asignaturas, asig)) {
 			if (esHecha(asignaturas, asig)) {
-				if (asignaturas.aprobadas.includes(asig.acronimo)) return "text-success";
-				else return "text-warning";
+				if (asignaturas.aprobadas.includes(asig.acronimo)) return "text-green-600";
+				else return "text-yellow-600 dark:text-yellow-500";
 			} else return "";
-		} else return "text-danger";
+		} else return "text-red-600";
 	};
 
 	const handleAnio = () => {
@@ -150,7 +154,7 @@ export default function AsignaturaInfo() {
 						</CardHeader>
 						<CardContent className='space-y-4'>
 							<div className=' border-t border-border pt-4'>
-								<span className='font-bold'>Estado:</span> {handleEstado()}{" "}
+								<span className='text-bold'>Estado:</span> {handleEstado()}{" "}
 								{nota ? (
 									<>
 										{" "}

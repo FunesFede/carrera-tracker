@@ -62,8 +62,8 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 			window.localStorage.removeItem("emailForSignIn");
 
 			onSignInSuccess && onSignInSuccess(user);
-			const to = typeof from === "string" ? from : from?.pathname || "/";
-			navigate(to, { replace: true });
+			const to = typeof from === "string" ? from : from?.pathname || "/home";
+			navigate(to === "/" ? "/home" : to, { replace: true });
 		} catch (err) {
 			let errorMessage = "Ocurrió un error desconocido. " + (err.code || "");
 			switch (err.code) {

@@ -37,12 +37,12 @@ export default function Alerts() {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>ID</TableHead>
-							<TableHead>Tipo</TableHead>
-							<TableHead>Titulo</TableHead>
-							<TableHead>Contenido</TableHead>
-							<TableHead>Dismissable</TableHead>
-							<TableHead>Hidden</TableHead>
+							<TableHead className='text-center'>ID</TableHead>
+							<TableHead className='text-center'>Tipo</TableHead>
+							<TableHead className='text-center'>Titulo</TableHead>
+							<TableHead className='text-center'>Contenido</TableHead>
+							<TableHead className='text-center'>Dismissable</TableHead>
+							<TableHead className='text-center'>Hidden</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>

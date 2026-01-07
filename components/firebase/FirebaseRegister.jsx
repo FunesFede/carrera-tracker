@@ -12,11 +12,13 @@ import { User, Mail, Lock } from "lucide-react";
 import { Spinner } from "../Spinner";
 
 import ReCAPTCHA from "react-google-recaptcha";
+import { useDarkMode } from "../../utils/hooks/useDarkMode";
 
 const FirebaseRegister = ({ onSignInSuccess }) => {
 	const [loading, setLoading] = useState(false);
 	const [recaptchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
+	const { isDark } = useDarkMode();
 
 	const {
 		register,
@@ -35,7 +37,7 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 			let userCredential;
 			userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
 			await updateProfile(userCredential.user, { displayName: data.displayName });
-			onSignInSuccess(userCredential.user);
+			onSignInSuccess && onSignInSuccess(userCredential.user);
 			navigate("/", { replace: true });
 
 			await sendEmailVerification(userCredential.user);
@@ -68,7 +70,7 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 	return (
 		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
 			<div className='mb-3 text-center'>
-				<img src='/images/logo_2.png' className='grayscale dark:grayscale-0' alt='Logo UTN' width={35} height={40} draggable={false} />
+				<img src={isDark ? "/images/logo_2.png" : "/images/logo_2_dark.png"} alt='Logo UTN' width={35} height={40} draggable={false} className='mx-auto' />
 				<h3>¡Bienvenido a tu carrera tracker!</h3>
 				<h4>Por favor, completá tu registro</h4>
 			</div>

@@ -54,7 +54,7 @@ export default function Asignatura({ asignatura }) {
 	return (
 		<>
 			<SetNotaModal show={showModal} setShow={setShowModal} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
-			<Card className={cn("mb-3 select-none border-2", getBgColor())}>
+			<Card className={cn("mb-3 border-2", getBgColor())}>
 				<CardHeader className='pb-3'>
 					<CardTitle className='flex flex-col items-center justify-center gap-2 text-center'>
 						<div className='flex items-center gap-2'>
@@ -64,7 +64,7 @@ export default function Asignatura({ asignatura }) {
 							</div>
 						</div>
 						{asignatura.tipo === "Electiva" && (
-							<Badge variant='default' className='bg-emerald-600 dark:bg-emerald-700 hover:bg-emerald-400 dark:hover:bg-emerald-500'>
+							<Badge variant='default' className='select-none text-white bg-emerald-500 dark:bg-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-700'>
 								Electiva
 							</Badge>
 						)}
@@ -77,7 +77,7 @@ export default function Asignatura({ asignatura }) {
 							size='sm'
 							title='Aprobar Asignatura'
 							disabled={!cursable || asignaturas.aprobadas.includes(asignatura.acronimo)}
-							className='bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700'
+							className='text-white bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700'
 							id={asignatura.acronimo + "btnNotaModal"}
 							onClick={openModal}
 						>
@@ -89,7 +89,7 @@ export default function Asignatura({ asignatura }) {
 							size='sm'
 							title='Regularizar Asignatura'
 							disabled={!cursable || hecha}
-							className='bg-amber-300 hover:bg-amber-400 dark:bg-amber-500 dark:hover:bg-amber-600'
+							className='text-white bg-amber-300 hover:bg-amber-400 dark:bg-amber-500 dark:hover:bg-amber-600'
 							onClick={() => addRegularizada(user.uid, asignatura.acronimo)}
 						>
 							<Clock className='h-4 w-4' />
@@ -97,7 +97,7 @@ export default function Asignatura({ asignatura }) {
 
 						<Button
 							variant='default'
-							className='bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600'
+							className='text-white bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600'
 							size='sm'
 							title='Ver Información'
 							onClick={() => navigate(`/asignaturas/${asignatura.acronimo}`)}
@@ -112,7 +112,7 @@ export default function Asignatura({ asignatura }) {
 						>
 							<Button
 								variant='default'
-								className='bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600'
+								className='text-white bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600'
 								size='sm'
 								title='Eliminar Asignatura'
 								disabled={!hecha}

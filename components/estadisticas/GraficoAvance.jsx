@@ -57,10 +57,10 @@ export default function GraficoAvance() {
 							outerRadius={120}
 							fill='#8884d8'
 							dataKey='value'
-							style={{ fontSize: "14px", fontWeight: "600" }}
+							style={{ fontSize: "14px", fontWeight: "600", outline: "none" }}
 						>
 							{data.map((entry, index) => (
-								<Cell key={`cell-${index}`} fill={entry.color} />
+								<Cell key={`cell-${index}`} fill={entry.color} style={{ outline: "none" }} />
 							))}
 						</Pie>
 						<Legend wrapperStyle={{ fontSize: "14px" }} />

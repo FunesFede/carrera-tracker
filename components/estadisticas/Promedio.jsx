@@ -12,12 +12,12 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { CheckCircle, FileCheck, FileX, FolderX, ListChecks, ChevronDown, ChevronRight, AlertTriangle, Pen, ChevronLeft } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function Promedio() {
 	const asignaturas = useContext(AsignaturasContext);
 	const notas = useContext(NotasContext);
 	const [aplazos, setAplazos] = useState(0);
-	const [openCollapse, setOpenCollapse] = useState(false);
 
 	const faltantes = (asignaturas.aprobadas || []).filter((acrom) => !(acrom in notas));
 
@@ -100,78 +100,76 @@ export default function Promedio() {
 
 			<Card className='bg-card'>
 				<CardContent className='pt-6'>
-					<Collapsible>
-						<CollapsibleTrigger className='flex justify-between items-center cursor-pointer' onClick={() => setOpenCollapse(!openCollapse)}>
-							<h5 className='mb-0 flex items-center gap-2'>
-								<ListChecks className='h-5 w-5' /> Detalle de Notas
-							</h5>
-							<Button variant='ghost' size='icon'>
-								{openCollapse ? <ChevronDown className='h-4 w-4' /> : <ChevronLeft className='h-4 w-4' />}
-							</Button>
-						</CollapsibleTrigger>
+					<Accordion collapsible>
+						<AccordionItem value='item-1'>
+							<AccordionTrigger className='flex justify-between items-center cursor-pointer'>
+								<h5 className='mb-0 flex items-center gap-2'>
+									<ListChecks className='h-5 w-5' /> Detalle de Notas
+								</h5>
+							</AccordionTrigger>
+							<AccordionContent className='mt-4'>
+								<Table>
+									<TableHeader>
+										<TableRow>
+											<TableHead className='text-center'>Año</TableHead>
+											<TableHead className='text-center'>Asignatura</TableHead>
+											<TableHead className='text-center'>Nota Final</TableHead>
+											<TableHead></TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
+										{faltantes.length > 0 &&
+											faltantes.map((faltante, index) => {
+												const asig = asignaturasData.find((a) => a.acronimo === faltante);
+												const nombre = asig?.nombre || faltante;
+												const anio = asig?.anio || 0;
+												return (
+													<TableRow key={index} className='bg-red-900/20'>
+														<TableCell>{anio}</TableCell>
+														<TableCell>{nombre}</TableCell>
+														<TableCell>
+															<Badge variant='destructive'>
+																<AlertTriangle className='h-3 w-3' />
+															</Badge>
+														</TableCell>
+														<TableCell>
+															<NavLink to={`/asignaturas/${faltante}?edit=true`} className='text-primary hover:underline'>
+																<Pen className='h-4 w-4' />
+															</NavLink>
+														</TableCell>
+													</TableRow>
+												);
+											})}
 
-						<CollapsibleContent className='mt-4'>
-							<Table>
-								<TableHeader>
-									<TableRow>
-										<TableHead className='text-center'>Año</TableHead>
-										<TableHead className='text-center'>Asignatura</TableHead>
-										<TableHead className='text-center'>Nota Final</TableHead>
-										<TableHead></TableHead>
-									</TableRow>
-								</TableHeader>
-								<TableBody>
-									{faltantes.length > 0 &&
-										faltantes.map((faltante, index) => {
-											const asig = asignaturasData.find((a) => a.acronimo === faltante);
-											const nombre = asig?.nombre || faltante;
-											const anio = asig?.anio || 0;
+										{notasDetalle.map((asig, index) => {
 											return (
-												<TableRow key={index} className='bg-red-900/20'>
-													<TableCell>{anio}</TableCell>
-													<TableCell>{nombre}</TableCell>
+												<TableRow key={index}>
+													<TableCell>{asig.anio}</TableCell>
 													<TableCell>
-														<Badge variant='destructive'>
-															<AlertTriangle className='h-3 w-3' />
-														</Badge>
+														<NavLink to={`/asignaturas/${asig.acrom}`}>{asig.nombre}</NavLink>
 													</TableCell>
+													<TableCell className='normal-nums'>{asig.nota}</TableCell>
 													<TableCell>
-														<NavLink to={`/asignaturas/${faltante}?edit=true`} className='text-primary hover:underline'>
+														<NavLink to={`/asignaturas/${asig.acrom}?edit=true`} className='text-primary hover:underline'>
 															<Pen className='h-4 w-4' />
 														</NavLink>
 													</TableCell>
 												</TableRow>
 											);
 										})}
-
-									{notasDetalle.map((asig, index) => {
-										return (
-											<TableRow key={index}>
-												<TableCell>{asig.anio}</TableCell>
-												<TableCell>
-													<NavLink to={`/asignaturas/${asig.acrom}`}>{asig.nombre}</NavLink>
-												</TableCell>
-												<TableCell className='normal-nums'>{asig.nota}</TableCell>
-												<TableCell>
-													<NavLink to={`/asignaturas/${asig.acrom}?edit=true`} className='text-primary hover:underline'>
-														<Pen className='h-4 w-4' />
-													</NavLink>
-												</TableCell>
-											</TableRow>
-										);
-									})}
-								</TableBody>
-								<TableFooter>
-									<TableRow>
-										<TableCell></TableCell>
-										<TableCell>Cantidad: {cantidadNotas}</TableCell>
-										<TableCell>Suma: {sumaNotas}</TableCell>
-										<TableCell></TableCell>
-									</TableRow>
-								</TableFooter>
-							</Table>
-						</CollapsibleContent>
-					</Collapsible>
+									</TableBody>
+									<TableFooter>
+										<TableRow>
+											<TableCell></TableCell>
+											<TableCell>Cantidad: {cantidadNotas}</TableCell>
+											<TableCell>Suma: {sumaNotas}</TableCell>
+											<TableCell></TableCell>
+										</TableRow>
+									</TableFooter>
+								</Table>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 				</CardContent>
 			</Card>
 		</div>

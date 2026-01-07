@@ -16,7 +16,7 @@ export default function Register({ signInSuccessFunc }) {
 						</Card>
 					</div>
 					<div className='hidden md:flex md:col-span-5 bg-card border border-l-0 rounded-r-lg items-center justify-center p-6'>
-						<img draggable='false' src='/images/undraw_login.svg' className='max-w-xs w-full' alt='Login illustration' />
+						<img draggable='false' src='/images/undraw_hello.svg' className='max-w-xs w-full' alt='Hello illustration' />
 					</div>
 				</div>
 			</div>
