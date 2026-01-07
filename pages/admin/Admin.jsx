@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { Container } from "react-bootstrap";
 import Alerts from "../../components/admin/Alerts";
 import { useNavigate } from "react-router";
 import { isAdmin } from "../../utils/admin";
@@ -14,8 +13,10 @@ export default function Admin() {
 	});
 
 	return (
-		<Container className='py-3 bg-dark text-white d-flex flex-column flex-grow-1'>
-			<Alerts />
-		</Container>
+		<div className='py-8 bg-background flex flex-col flex-grow min-h-screen'>
+			<div className='container mx-auto px-4'>
+				<Alerts />
+			</div>
+		</div>
 	);
 }

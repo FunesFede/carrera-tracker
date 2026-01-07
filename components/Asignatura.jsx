@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router";
-import { Modal } from "bootstrap";
+import { Check, Clock, Lock, Unlock, Info, Trash2 } from "lucide-react";
 
 import AsignaturasContext from "../utils/contexts/AsignaturasContext.js";
 import UserStateContext from "../utils/contexts/UserContext.js";
@@ -9,7 +9,11 @@ import SetNotaModal from "./modals/SetNotaModal.jsx";
 import { esCursable, esHecha } from "../utils/asignaturasHelpers.js";
 
 import { addRegularizada, borraraAsignaturaYDependencias } from "../utils/firebase/asignaturas.js";
-import { Badge, Button, Card, Container } from "react-bootstrap";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { ConfirmarAccion } from "./modals/ConfirmarAccion.jsx";
 
 export default function Asignatura({ asignatura }) {
 	const navigate = useNavigate();
@@ -24,10 +28,10 @@ export default function Asignatura({ asignatura }) {
 	const handleIcono = () => {
 		if (cursable) {
 			if (hecha) {
-				if (asignaturas.aprobadas.includes(asignatura.acronimo)) return <i className='bi bi-check-lg'></i>;
-				else return <i className='bi bi-hourglass-split'></i>;
-			} else return <i className='bi bi-unlock-fill'></i>;
-		} else return <i className='bi bi-lock-fill'></i>;
+				if (asignaturas.aprobadas.includes(asignatura.acronimo)) return <Check className='h-5 w-5' />;
+				else return <Clock className='h-5 w-5' />;
+			} else return <Unlock className='h-5 w-5' />;
+		} else return <Lock className='h-5 w-5' />;
 	};
 
 	const openModal = () => {
@@ -35,69 +39,90 @@ export default function Asignatura({ asignatura }) {
 	};
 
 	const eliminarAsignatura = () => {
-		if (window.confirm("¿Seguro que deseas eliminar esta asignatura?\n\nAsignaturas que dependan de esta serán eliminadas y la nota de exámen final será removida.")) {
-			borraraAsignaturaYDependencias(user.uid, asignatura.acronimo);
+		borraraAsignaturaYDependencias(user.uid, asignatura.acronimo);
+	};
+
+	const getBgColor = () => {
+		if (hecha) {
+			return asignaturas.aprobadas.includes(asignatura.acronimo)
+				? "bg-emerald-100 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700"
+				: "bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700";
 		}
+		return cursable ? "bg-slate-200 dark:bg-slate-700/30 border-slate-300 dark:border-slate-700" : "bg-rose-200 dark:bg-rose-900/30 border-rose-300 dark:border-rose-700";
 	};
 
 	return (
 		<>
-			<Container fluid className='mb-3 user-select-none'>
-				<SetNotaModal show={showModal} setShow={setShowModal} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
-				<Card
-					bg={hecha ? (asignaturas.aprobadas.includes(asignatura.acronimo) ? "success" : "warning") : cursable ? "secondary" : "danger"}
-					className={"bg-gradient text-white bg-opacity-" + (hecha ? (asignaturas.aprobadas.includes(asignatura.acronimo) ? "50" : "50") : cursable ? "75" : "75")}
-				>
-					<Card.Body>
-						<Card.Title>
-							{handleIcono()}
-							<span className={aprobada ? "text-decoration-line-through" : ""}>{asignatura.nombre}</span>{" "}
-							{asignatura.tipo == "Electiva" && (
-								<Badge bg='success' className='bg-gradient bg-opacity-75'>
-									Electiva
-								</Badge>
-							)}
-						</Card.Title>
+			<SetNotaModal show={showModal} setShow={setShowModal} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
+			<Card className={cn("mb-3 border-2", getBgColor())}>
+				<CardHeader className='pb-3'>
+					<CardTitle className='flex flex-col items-center justify-center gap-2 text-center'>
+						<div className='flex items-center gap-2'>
+							<div>{handleIcono()}</div>
+							<div className={aprobada ? "line-through" : ""}>
+								<p>{asignatura.nombre}</p>
+							</div>
+						</div>
+						{asignatura.tipo === "Electiva" && (
+							<Badge variant='default' className='select-none text-white bg-emerald-500 dark:bg-emerald-600 hover:bg-emerald-600 dark:hover:bg-emerald-700'>
+								Electiva
+							</Badge>
+						)}
+					</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div className='flex flex-wrap justify-center gap-2'>
+						<Button
+							variant='default'
+							size='sm'
+							title='Aprobar Asignatura'
+							disabled={!cursable || asignaturas.aprobadas.includes(asignatura.acronimo)}
+							className='text-white bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-700'
+							id={asignatura.acronimo + "btnNotaModal"}
+							onClick={openModal}
+						>
+							<Check className='h-4 w-4' />
+						</Button>
 
-						<Container className='botones-container'>
+						<Button
+							variant='default'
+							size='sm'
+							title='Regularizar Asignatura'
+							disabled={!cursable || hecha}
+							className='text-white bg-amber-300 hover:bg-amber-400 dark:bg-amber-500 dark:hover:bg-amber-600'
+							onClick={() => addRegularizada(user.uid, asignatura.acronimo)}
+						>
+							<Clock className='h-4 w-4' />
+						</Button>
+
+						<Button
+							variant='default'
+							className='text-white bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600'
+							size='sm'
+							title='Ver Información'
+							onClick={() => navigate(`/asignaturas/${asignatura.acronimo}`)}
+						>
+							<Info className='h-4 w-4' />
+						</Button>
+
+						<ConfirmarAccion
+							title='¿Eliminar asignatura?'
+							description='Asignaturas que dependan de esta serán eliminadas y la nota de exámen final será removida.'
+							onConfirm={eliminarAsignatura}
+						>
 							<Button
-								variant='success'
+								variant='default'
+								className='text-white bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600'
 								size='sm'
-								title='Aprobar Asignatura'
-								disabled={!cursable || asignaturas.aprobadas.includes(asignatura.acronimo)}
-								className='shadow me-2 text-white'
-								id={asignatura.acronimo + "btnNotaModal"}
-								onClick={openModal}
+								title='Eliminar Asignatura'
+								disabled={!hecha}
 							>
-								<i className='bi bi-check-lg'></i>
+								<Trash2 className='h-4 w-4' />
 							</Button>
-
-							<Button
-								variant='warning'
-								size='sm'
-								title='Regularizar Asignatura'
-								disabled={!cursable || hecha}
-								className='me-2 shadow text-white'
-								onClick={() => addRegularizada(user.uid, asignatura.acronimo)}
-							>
-								<i className='bi bi-hourglass-split'></i>
-							</Button>
-
-							<Button variant='primary' size='sm' title='Ver Información' className='me-2 shadow' onClick={() => navigate(`/asignaturas/${asignatura.acronimo}`)}>
-								<i className='bi bi-info-lg'></i>
-							</Button>
-
-							{/* <button title='Ver Correlativas' className='btn btn-primary btn-sm me-2' data-bs-toggle='modal' data-bs-target={"#" + asignatura.acronimo + "modal"}>
-								<i className='bi bi-arrow-left-right'></i>
-							</button> */}
-
-							<Button variant='danger' size='sm' title='Eliminar Asignatura' disabled={!hecha} className='shadow' onClick={eliminarAsignatura}>
-								<i className='bi bi-trash3'></i>
-							</Button>
-						</Container>
-					</Card.Body>
-				</Card>
-			</Container>
+						</ConfirmarAccion>
+					</div>
+				</CardContent>
+			</Card>
 		</>
 	);
 }

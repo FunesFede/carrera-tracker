@@ -1,48 +1,46 @@
+import { Check, Hourglass, Info, ArrowLeftRight, X, Unlock, Lock } from "lucide-react";
+
 export default function InfoBanner() {
 	return (
 		<>
-			<div className='row'>
-				<h5 className='col'>Guía de Botones</h5>
+			<div className='mb-2'>
+				<h5>Guía de Botones</h5>
 			</div>
-			<div className='row mb-2'>
+			<div className='space-y-2 mb-2'>
 				<div className='text-success'>
-					<i className='bi bi-check-lg'></i> Aprobar Asignatura <br /> (final rendido o AD)
+					<Check className='inline w-4 h-4 mr-1' /> Aprobar Asignatura <br /> (final rendido o AD)
 				</div>
 				<div className='text-warning mt-2'>
-					<i className='bi bi-hourglass text-warning'></i> Regularizar Asignatura <br /> (cursada pero final no rendido)
+					<Hourglass className='inline w-4 h-4 mr-1' /> Regularizar Asignatura <br /> (cursada pero final no rendido)
 				</div>
 				<div className='text-primary mt-2'>
-					<i className='bi bi-info-circle'></i> Ver Información Detallada
+					<Info className='inline w-4 h-4 mr-1' /> Ver Información Detallada
 				</div>
 				<div className='text-primary mt-2'>
-					<i className='bi bi-arrow-left-right'></i> Ver Correlativas
+					<ArrowLeftRight className='inline w-4 h-4 mr-1' /> Ver Correlativas
 				</div>
 				<div className='text-danger mt-2'>
-					<i className='bi bi-x-lg'></i> Eliminar Asignatura (dependientes se caen)
+					<X className='inline w-4 h-4 mr-1' /> Eliminar Asignatura (dependientes se caen)
 				</div>
 			</div>
-			<div className='row'>
-				<div className='col'>
-					<br />
-				</div>
+			<div className='my-4'>
+				<br />
 			</div>
-			<div className='row'>
-				<div className='col'>
-					<h5>Guía de Iconos</h5>
-				</div>
+			<div className='mb-2'>
+				<h5>Guía de Iconos</h5>
 			</div>
-			<div className='row mb-3'>
+			<div className='space-y-2 mb-3'>
 				<div className='text-white'>
-					<i className='bi bi-unlock-fill'></i> Asignatura Cursable
+					<Unlock className='inline w-4 h-4 mr-1' /> Asignatura Cursable
 				</div>
 				<div className='text-danger mt-2'>
-					<i className='bi bi-lock-fill'></i> Asignatura No Cursable
+					<Lock className='inline w-4 h-4 mr-1' /> Asignatura No Cursable
 				</div>
 				<div className='text-success mt-2'>
-					<i className='bi bi-check-lg'></i> Asignatura Aprobada
+					<Check className='inline w-4 h-4 mr-1' /> Asignatura Aprobada
 				</div>
 				<div className='text-warning mt-2'>
-					<i className='bi bi-hourglass'></i> Asignatura Regularizada
+					<Hourglass className='inline w-4 h-4 mr-1' /> Asignatura Regularizada
 				</div>
 			</div>
 		</>

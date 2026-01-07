@@ -3,9 +3,13 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Container, FloatingLabel, Form } from "react-bootstrap";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Mail, Lock, KeyRound, DoorOpen } from "lucide-react";
+import { Spinner } from "../Spinner";
 
 const FirebasePasswordReset = () => {
 	const [loading, setLoading] = useState(false);
@@ -33,61 +37,55 @@ const FirebasePasswordReset = () => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(handleAuth)}>
+		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
 			<div className='mb-3'>
 				<h3>
 					{" "}
-					<i className='bi bi-lock-fill'></i> Reestablecé tu contraseña
+					<Lock className='inline w-5 h-5 mr-1' /> Reestablecé tu contraseña
 				</h3>
 				<h5>Recibirás un mail para reestablecerla</h5>
 			</div>
 
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-envelope-at-fill'></i> Email
-						</>
-					}
-				>
-					<Form.Control
-						isInvalid={errors.email}
-						placeholder='email@example.com'
-						id='email'
-						autoComplete='username'
-						type='email'
-						{...register("email", { required: true })}
-						disabled={done}
-					/>
-
-					{errors.email && <Form.Control.Feedback type='invalid'>Un email es requerido</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
+			<div className='space-y-2 text-start'>
+				<Label htmlFor='email'>
+					<Mail className='inline w-4 h-4 mr-1' /> Email
+				</Label>
+				<Input
+					id='email'
+					type='email'
+					placeholder='email@example.com'
+					autoComplete='username'
+					className={errors.email ? "border-destructive" : ""}
+					disabled={done}
+					{...register("email", { required: true })}
+				/>
+				{errors.email && <p className='text-sm text-destructive'>Un email es requerido</p>}
+			</div>
 			{!done ? (
-				<Button variant='primary' type='submit' disabled={loading}>
+				<Button type='submit' disabled={loading} className='w-full'>
 					{loading ? (
 						<>
-							<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-							<span role='status'> Cargando...</span>
+							<Spinner className='mr-2' />
+							Cargando...
 						</>
 					) : (
 						<>
-							<i className='bi bi-key-fill'></i> Reestablecer Contraseña
+							<KeyRound className='inline w-4 h-4 mr-2' /> Reestablecer Contraseña
 						</>
 					)}
 				</Button>
 			) : (
-				<Button variant='primary' type='button' onClick={() => navigate("/login")}>
-					<i className='bi bi-door-open-fill'></i> Volver al login
+				<Button type='button' onClick={() => navigate("/login")} className='w-full'>
+					<DoorOpen className='inline w-4 h-4 mr-2' /> Volver al login
 				</Button>
 			)}
-			<p className='text-secondary m-1'>
+			<p className='text-muted-foreground m-1 text-center'>
 				¿No tenés una cuenta?{" "}
-				<NavLink className='link-underline link-underline-opacity-0' to='/register'>
+				<NavLink className='text-primary hover:underline' to='/register'>
 					Registrate
 				</NavLink>
 			</p>
-		</Form>
+		</form>
 	);
 };
 

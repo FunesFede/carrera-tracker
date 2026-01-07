@@ -1,32 +1,28 @@
 import React from "react";
-import { Button } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router";
 
 export default function NotFound() {
 	const navigate = useNavigate();
 	return (
-		<Container className='py-3 bg-dark text-white d-flex flex-column flex-grow-1'>
-			<Container className='position-absolute top-50 start-50 translate-middle'>
-				<h1 className='fw-bold'>
-					404: <span className='text-danger'>Not Found</span>
+		<div className='py-8 bg-background flex flex-col flex-grow min-h-screen items-center justify-center'>
+			<div className='text-center px-4'>
+				<h1 className='text-6xl font-bold mb-4'>
+					404: <span className='text-red-500'>Not Found</span>
 				</h1>
-				<h2>
+				<h2 className='text-2xl mb-8'>
 					No encontramos eso, ¿
-					<a
-						target='_blank'
-						className='link-danger link-offset-1 link-underline link-underline-opacity-0 link-underline-opacity-75-hover'
-						href='https://www.youtube.com/watch?v=FPixzRVB1Vs'
-					>
+					<a target='_blank' className='text-red-600 dark:text-red-500 hover:underline' href='https://www.youtube.com/watch?v=FPixzRVB1Vs'>
 						estamos perdidas
 					</a>
 					?
 				</h2>
-				<br />
-				<Button variant='outline-danger' className='mt-2' onClick={() => navigate("/")}>
-					<i className='bi bi-arrow-left'></i> Volver
+				<Button variant='outline' onClick={() => navigate("/home")}>
+					<ArrowLeft className='mr-2 h-4 w-4' />
+					Volver
 				</Button>
-			</Container>
-		</Container>
+			</div>
+		</div>
 	);
 }

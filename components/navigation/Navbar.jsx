@@ -1,22 +1,27 @@
 import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { Search, Moon, Sun, MoonStar, CloudSun, Rainbow } from "lucide-react";
+import { useDarkMode } from "../../utils/hooks/useDarkMode";
 
 import asignaturas from "../../data/asignaturas.json";
 import UserStateContext from "../../utils/contexts/UserContext";
 import Profile from "../Profile";
-import { Button, Container, Form, InputGroup, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { isAdmin } from "../../utils/admin";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import LinksMenu from "./Menu";
 
 export default function NavbarR({ setAsignaturas }) {
 	const [query, setQuery] = useState("");
+
 	const navigate = useNavigate();
 	const user = useContext(UserStateContext);
+	const { isDark, toggleDarkMode } = useDarkMode();
 
 	const buscarAsignatura = (e) => {
 		e.preventDefault();
 
-		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/");
+		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/home");
 
 		if (!query.trim()) return;
 		const lowerQuery = query.toLowerCase();
@@ -30,135 +35,65 @@ export default function NavbarR({ setAsignaturas }) {
 		}
 	};
 
+	const handleSaludo = () => {
+		const now = new Date();
+		const hora = now.getHours();
+
+		if (hora >= 6 && hora < 12)
+			return (
+				<>
+					<CloudSun /> Buenos días
+				</>
+			);
+		if (hora >= 12 && hora < 20)
+			return (
+				<>
+					<Rainbow /> Buenas tardes
+				</>
+			);
+		if (hora >= 20 || hora < 6)
+			return (
+				<>
+					<MoonStar /> Buenas noches
+				</>
+			);
+		else return "👋 Hola";
+	};
+
 	return (
-		<Navbar sticky='top' expand='lg' className='bg-body-tertiary px-3 py-1'>
-			<NavLink to='/' className='navbar-brand'>
-				<img src='/images/logo.png' alt='Logo' width='100' height='30' className='d-inline-block align-text-top' />
-			</NavLink>
-			<Navbar.Toggle aria-controls='navbarSupportedContent' />
-			<Navbar.Collapse id='navbarSupportedContent'>
-				<Nav className='me-auto mb-2 mb-lg-0'>
-					<Nav.Item>
-						<NavLink className={"nav-link " + (user ? "" : "disabled")} to='/'>
-							<i className='bi bi-house-fill'></i> Home
-						</NavLink>
-					</Nav.Item>
-					<Nav.Item>
-						<NavLink className={"nav-link " + (user ? "" : "disabled")} to='/estadisticas'>
-							<i className='bi bi-clipboard-data-fill'></i> Estadísticas
-						</NavLink>
-					</Nav.Item>
-					<NavDropdown
-						title={
-							<>
-								<i className='bi bi-building-fill'></i> Universidad
-							</>
-						}
-						className='dropdown-perfil'
-					>
-						<NavDropdown.Item href='https://a4.frc.utn.edu.ar' target='_blank' rel='noopener noreferrer'>
-							<i className='bi bi-kanban-fill'></i> Autogestión
-						</NavDropdown.Item>
+		<nav className='sticky top-0 z-50 bg-background border-b px-4 py-2'>
+			<div className='container mx-auto flex items-center justify-between gap-4'>
+				<div className='flex items-center gap-2'>
+					<LinksMenu buscar={buscarAsignatura} set={setQuery} />
+					<NavLink to={user ? "/home" : "/"} className='flex items-center'>
+						<img src={isDark ? "/images/logo.png" : "/images/logo-dark.png"} alt='Logo' width='100' height='30' className='inline-block' />
+					</NavLink>
+				</div>
 
-						<NavDropdown.Item href='https://uv.frc.utn.edu.ar' target='_blank' rel='noopener noreferrer'>
-							<i className='bi bi-easel3-fill'></i> Aula Virtual
-						</NavDropdown.Item>
+				<h4 className='hidden md:flex gap-2'>
+					{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
+				</h4>
 
-						<NavDropdown
-							title={
-								<>
-									<i className='bi bi-calendar-week'></i> Horarios
-								</>
-							}
-							drop='end'
-							className='dropend hide-mobile'
-						>
-							<NavDropdown.Item href='/docs/horarios/primero.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Primer Año
-							</NavDropdown.Item>
-							<NavDropdown.Item href='/docs/horarios/segundo.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Segundo Año
-							</NavDropdown.Item>
-							<NavDropdown.Item href='/docs/horarios/tercero.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Tercer Año
-							</NavDropdown.Item>
-							<NavDropdown.Item href='/docs/horarios/cuarto.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Cuarto Año
-							</NavDropdown.Item>
-							<NavDropdown.Item href='/docs/horarios/quinto.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Quinto Año
-							</NavDropdown.Item>
-							<NavDropdown.Divider />
-							<NavDropdown.Item href='/docs/horarios/seminario.pdf' target='_blank'>
-								<i className='bi bi-calendar-week'></i> Seminario
-							</NavDropdown.Item>
-						</NavDropdown>
-
-						<NavDropdown.Item href='https://www.institucional.frc.utn.edu.ar/sistemas/' target='_blank' rel='noopener noreferrer'>
-							<i className='bi bi-cpu'></i> Departamento de Sistemas
-						</NavDropdown.Item>
-						<NavDropdown.Item href='https://seu.frc.utn.edu.ar/?pIs=1286' target='_blank' rel='noopener noreferrer'>
-							<i className='bi bi-laptop'></i> Pasantías
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item href='/docs/correlativas.pdf' target='_blank' rel='noopener noreferrer'>
-							<i className='bi bi-file-earmark-text-fill'></i> Correlativas PDF
-						</NavDropdown.Item>
-					</NavDropdown>
-
-					<NavDropdown
-						title={
-							<>
-								<i className='bi bi-calendar-week'></i> Horarios
-							</>
-						}
-						className='show-mobile'
-					>
-						<NavDropdown.Item href='/docs/horarios/primero.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Primer Año
-						</NavDropdown.Item>
-						<NavDropdown.Item href='/docs/horarios/segundo.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Segundo Año
-						</NavDropdown.Item>
-						<NavDropdown.Item href='/docs/horarios/tercero.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Tercer Año
-						</NavDropdown.Item>
-						<NavDropdown.Item href='/docs/horarios/cuarto.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Cuarto Año
-						</NavDropdown.Item>
-						<NavDropdown.Item href='/docs/horarios/quinto.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Quinto Año
-						</NavDropdown.Item>
-						<NavDropdown.Divider />
-						<NavDropdown.Item href='/docs/horarios/seminario.pdf' target='_blank'>
-							<i className='bi bi-calendar-week'></i> Seminario
-						</NavDropdown.Item>
-					</NavDropdown>
-					{/* <li className='nav-item'>
-							<a className='nav-link' data-bs-toggle='offcanvas' href='#GuiaBotones' role='button' aria-controls='GuiaBotones'>
-								<i className='bi bi-question-circle-fill'></i> Guía Botones
-							</a>
-						</li> */}
-					{isAdmin(user?.uid) && (
-						<li className='nav-item'>
-							<NavLink to='/admin' className='nav-link'>
-								<i className='bi bi-tools'></i> Admin
-							</NavLink>
-						</li>
-					)}
-				</Nav>
-				<Form role='search' onSubmit={buscarAsignatura}>
-					<InputGroup>
-						<Form.Control type='search' placeholder='Buscar Asignatura...' aria-label='Buscar Asignatura' onChange={(e) => setQuery(e.target.value)} disabled={!user} />
-						<Button variant='outline-primary' type='submit' disabled={!user}>
-							<i className='bi bi-search'></i>
+				<div className='flex items-center gap-2'>
+					<form role='search' onSubmit={buscarAsignatura} className='hidden md:flex items-center gap-2'>
+						<Input
+							type='search'
+							placeholder='Buscar Asignatura...'
+							aria-label='Buscar Asignatura'
+							onChange={(e) => setQuery(e.target.value)}
+							disabled={!user}
+							className='w-48'
+						/>
+						<Button variant='outline' type='submit' size='icon' disabled={!user}>
+							<Search className='h-4 w-4' />
 						</Button>
-					</InputGroup>
-				</Form>
-				<Navbar.Text>
+					</form>
+					<Button variant='outline' size='icon' onClick={toggleDarkMode} title={isDark ? "Modo Claro" : "Modo Oscuro"}>
+						{isDark ? <Sun className='h-4 w-4' /> : <Moon className='h-4 w-4' />}
+					</Button>
 					<Profile setAsignaturas={setAsignaturas} />
-				</Navbar.Text>
-			</Navbar.Collapse>
-		</Navbar>
+				</div>
+			</div>
+		</nav>
 	);
 }

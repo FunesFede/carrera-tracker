@@ -1,20 +1,25 @@
 import React from "react";
 
 import FirebaseRegister from "../../components/firebase/FirebaseRegister.jsx";
-import Container from "react-bootstrap/Container";
-import { Col, Row } from "react-bootstrap";
+import { Card, CardContent } from "@/components/ui/card.jsx";
 
 export default function Register({ signInSuccessFunc }) {
 	return (
-		<Container fluid className='bg-dark text-white d-flex flex-column flex-grow-1 flex-column flex-grow-1 align-items-center justify-content-center my-4'>
-			<Row className='g-0 w-100' style={{ maxWidth: "1000px" }}>
-				<Col md={7} className='bg-dark-custom rounded-start px-4 py-5'>
-					<FirebaseRegister onSignInSuccess={signInSuccessFunc} />
-				</Col>
-				<Col md={5} className='d-none d-md-flex bg-dark-custom rounded-end d-flex align-items-center justify-content-center p-4'>
-					<img draggable='false' src='/images/undraw_hello.svg' className='img-fluid' style={{ maxWidth: "300px" }} alt='Hello illustration' />
-				</Col>
-			</Row>
-		</Container>
+		<div className='bg-background flex flex-col flex-grow items-center justify-center min-h-screen py-8 px-4'>
+			<div className='w-full max-w-5xl'>
+				<div className='grid grid-cols-1 md:grid-cols-12 gap-0'>
+					<div className='md:col-span-7'>
+						<Card className='border-r-0 md:border-r rounded-r-none md:rounded-l-lg'>
+							<CardContent className='p-6 md:p-8'>
+								<FirebaseRegister onSignInSuccess={signInSuccessFunc} />
+							</CardContent>
+						</Card>
+					</div>
+					<div className='hidden md:flex md:col-span-5 bg-card border border-l-0 rounded-r-lg items-center justify-center p-6'>
+						<img draggable='false' src='/images/undraw_hello.svg' className='max-w-xs w-full' alt='Hello illustration' />
+					</div>
+				</div>
+			</div>
+		</div>
 	);
 }

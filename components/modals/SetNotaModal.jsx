@@ -4,28 +4,28 @@ import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
 
 import { addNotaYAprobar } from "../../utils/firebase/notas";
 
-import { Slide, toast } from "react-toastify";
+import { toast } from "sonner";
+import { Pencil, Info, X, Save } from "lucide-react";
 
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export default function SetNotaModalR({ show, setShow, userId, asignatura, aNota }) {
 	const [loading, setLoading] = useState(false);
 
 	const asignaturasContext = useContext(AsignaturasContext);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isDirty },
-	} = useForm({ values: { nota: aNota } });
+	const form = useForm({
+		defaultValues: { nota: aNota || "" },
+	});
 
 	const handleModal = async (data) => {
 		setLoading(true);
 
 		toast.promise(addNotaYAprobar(userId, asignatura, data, aNota, asignaturasContext), {
-			pending: aNota ? "Modificando nota..." : "Registrando nota...",
+			loading: aNota ? "Modificando nota..." : "Registrando nota...",
 			success: aNota ? "Nota modificada correctamente" : "Nota registrada correctamente",
 			error: aNota ? "Algo salió mal al intentar modificar la nota" : "Algo salió mal al intentar registrar la nota",
 		});
@@ -39,48 +39,57 @@ export default function SetNotaModalR({ show, setShow, userId, asignatura, aNota
 	};
 
 	return (
-		<Modal show={show} onHide={setShow} centered id={asignatura.acronimo + "NotaModal"} key={asignatura.acronimo + "NotaModal"}>
-			<Modal.Header>
-				<Modal.Title>
-					<i className='bi bi-pen'></i> Nota exámen final: {asignatura.nombre}
-				</Modal.Title>
-			</Modal.Header>
+		<Dialog open={show} onOpenChange={setShow}>
+			<DialogContent className='sm:max-w-[425px]'>
+				<DialogHeader>
+					<DialogTitle className='flex items-center gap-2'>
+						<Pencil className='h-5 w-5' />
+						Nota exámen final: {asignatura.nombre}
+					</DialogTitle>
+				</DialogHeader>
 
-			<Modal.Body>
-				{aNota ? (
-					""
-				) : (
-					<p className='text-start'>
-						<i className='bi bi-info-circle'></i> Antes de marcar como aprobada la asignatura, debés proveer la nota del exámen final. Esto es para calcular tu
-						promedio.
-					</p>
-				)}
-				<Form onSubmit={handleSubmit(handleModal)} id={"NotaForm" + asignatura.acronimo}>
-					<Form.Group className='mb-3 text-start'>
-						<Form.Label htmlFor={"notaInput" + asignatura.acronimo}>
-							<i className='bi bi-123'></i> Nota
-						</Form.Label>
-						<Form.Control
-							autoFocus
-							id={"notaInput" + asignatura.acronimo}
-							isInvalid={errors.nota}
-							type='number'
-							min={6}
-							max={10}
-							{...register("nota", { required: "Una nota es requerida", min: 6, max: 10 })}
-						/>
-						{errors.nota && <Form.Control.Feedback type='invalid'>{errors.nota.message || "La nota debe estar entre 6 y 10"}</Form.Control.Feedback>}
-					</Form.Group>
-				</Form>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button variant='danger' disabled={loading} onClick={cerrarModal}>
-					<i className='bi bi-x-lg'></i> Cancelar
-				</Button>
-				<Button form={"NotaForm" + asignatura.acronimo} variant='primary' type='submit' disabled={loading || !isDirty}>
-					<i className='bi bi-save-fill'></i> {loading ? "Guardando..." : "Guardar Nota"}
-				</Button>
-			</Modal.Footer>
-		</Modal>
+				<div className='space-y-4'>
+					{!aNota && (
+						<p className='text-sm text-start flex items-start gap-2'>
+							<Info className='h-4 w-4 mt-0.5 flex-shrink-0' />
+							<span>Antes de marcar como aprobada la asignatura, debés proveer la nota del exámen final. Esto es para calcular tu promedio.</span>
+						</p>
+					)}
+					<Form {...form}>
+						<form onSubmit={form.handleSubmit(handleModal)} id={"NotaForm" + asignatura.acronimo} className='space-y-4'>
+							<FormField
+								control={form.control}
+								name='nota'
+								rules={{
+									required: "Una nota es requerida",
+									min: { value: 6, message: "La nota debe ser al menos 6" },
+									max: { value: 10, message: "La nota debe ser como máximo 10" },
+								}}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel htmlFor={"notaInput" + asignatura.acronimo}>Nota</FormLabel>
+										<FormControl>
+											<Input {...field} id={"notaInput" + asignatura.acronimo} type='number' min={6} max={10} autoFocus />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</form>
+					</Form>
+				</div>
+
+				<DialogFooter className='gap-2'>
+					<Button variant='destructive' disabled={loading} onClick={cerrarModal}>
+						<X className='mr-2 h-4 w-4' />
+						Cancelar
+					</Button>
+					<Button form={"NotaForm" + asignatura.acronimo} type='submit' disabled={loading || !form.formState.isDirty}>
+						<Save className='mr-2 h-4 w-4' />
+						{loading ? "Guardando..." : "Guardar Nota"}
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }

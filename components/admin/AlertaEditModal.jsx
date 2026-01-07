@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Form, Modal, Button, FloatingLabel } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { editAlerta, removeAlerta } from "../../utils/firebase/alerts";
-import { toast } from "react-toastify";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Pen, Trash2, Save, Braces, Heading, FileText } from "lucide-react";
+import { Spinner } from "../Spinner";
+import { toast } from "sonner";
+import { ConfirmarAccion } from "../modals/ConfirmarAccion";
 
 export default function AlertaModal({ alert, show, setShow }) {
 	const [loading, setLoading] = useState(false);
@@ -11,6 +20,8 @@ export default function AlertaModal({ alert, show, setShow }) {
 		register,
 		handleSubmit,
 		formState: { errors, isDirty },
+		setValue,
+		watch,
 	} = useForm({ values: alert });
 
 	const cerrarModal = () => {
@@ -21,7 +32,7 @@ export default function AlertaModal({ alert, show, setShow }) {
 		setLoading(true);
 		toast
 			.promise(editAlerta(alert.id, data), {
-				pending: "Editando alerta...",
+				loading: "Editando alerta...",
 				success: "Alerta modificada correctamente",
 				error: "Algo salió mal al intentar editar la alerta",
 			})
@@ -30,12 +41,11 @@ export default function AlertaModal({ alert, show, setShow }) {
 		cerrarModal();
 	};
 
-	const handleRemove = async () => {
-		if (!window.confirm("¿Estás seguro de eliminar esta alerta?")) return;
+	const handleRemove = () => {
 		setLoading(true);
 		toast
 			.promise(removeAlerta(alert.id), {
-				pending: "Eliminando alerta...",
+				loading: "Eliminando alerta...",
 				success: "Alerta eliminada correctamente",
 				error: "Algo salió mal al intentar eliminar la alerta",
 			})
@@ -45,74 +55,84 @@ export default function AlertaModal({ alert, show, setShow }) {
 	};
 
 	return (
-		<Modal show={show} onHide={setShow} centered>
-			<Modal.Header closeButton>
-				<Modal.Title>
-					<i className='bi bi-pen'></i> Editar Alerta
-				</Modal.Title>
-			</Modal.Header>
+		<Dialog open={show} onOpenChange={setShow}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>
+						<Pen className='inline h-5 w-5 mr-2' /> Editar Alerta
+					</DialogTitle>
+				</DialogHeader>
 
-			<Modal.Body>
-				<Form onSubmit={handleSubmit(handleModal)} id='alertaEditForm'>
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-braces'></i> Tipo
-								</>
-							}
-						>
-							<Form.Select isInvalid={errors.type} {...register("type", { required: "Un tipo es requerido" })}>
-								<option value='info'>Info</option>
-								<option value='warning'>Warning</option>
-								<option value='danger'>Danger</option>
-							</Form.Select>
-						</FloatingLabel>
-					</Form.Group>
+				<form onSubmit={handleSubmit(handleModal)} id='alertaEditForm' className='space-y-4'>
+					<div className='space-y-2'>
+						<Label htmlFor='type'>
+							<Braces className='inline h-4 w-4 mr-1' /> Tipo
+						</Label>
+						<Select onValueChange={(value) => setValue("type", value, { shouldDirty: true })} value={watch("type")}>
+							<SelectTrigger className={errors.type ? "border-destructive" : ""}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value='info'>Info</SelectItem>
+								<SelectItem value='warning'>Warning</SelectItem>
+								<SelectItem value='danger'>Danger</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-card-heading'></i> Header
-								</>
-							}
-						>
-							<Form.Control placeholder='.' required autoFocus isInvalid={errors.header} {...register("header", { required: "Un titulo es requerido" })} />
-							{errors.header && <Form.Control.Feedback type='invalid'>{errors.header.message}</Form.Control.Feedback>}
-						</FloatingLabel>
-					</Form.Group>
+					<div className='space-y-2'>
+						<Label htmlFor='header'>
+							<Heading className='inline h-4 w-4 mr-1' /> Header
+						</Label>
+						<Input id='header' autoFocus className={errors.header ? "border-destructive" : ""} {...register("header", { required: "Un titulo es requerido" })} />
+						{errors.header && <p className='text-sm text-destructive'>{errors.header.message}</p>}
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-card-text'></i> Content
-								</>
-							}
-						>
-							<Form.Control placeholder='.' as='textarea' isInvalid={errors.content} {...register("content", { required: "El contenido es requerido" })} />
-							{errors.content && <Form.Control.Feedback type='invalid'>{errors.content.message}</Form.Control.Feedback>}
-						</FloatingLabel>
-					</Form.Group>
+					<div className='space-y-2'>
+						<Label htmlFor='content'>
+							<FileText className='inline h-4 w-4 mr-1' /> Content
+						</Label>
+						<textarea
+							id='content'
+							className={`flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm ${errors.content ? "border-destructive" : "border-input"}`}
+							{...register("content", { required: "El contenido es requerido" })}
+						/>
+						{errors.content && <p className='text-sm text-destructive'>{errors.content.message}</p>}
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<Form.Check type='switch' label='Dismissable' {...register("dismissable")} />
-						<Form.Check type='switch' label='Hide?' {...register("hide")} />
-					</Form.Group>
-				</Form>
-			</Modal.Body>
-			<Modal.Footer>
-				{/* <Button variant='danger' disabled={loading} onClick={cerrarModal}>
-					<i className='bi bi-x-lg'></i> Cancelar
-				</Button> */}
-				<Button variant='danger' disabled={loading} onClick={() => handleRemove()}>
-					<i className='bi bi-trash'></i> Eliminar
-				</Button>
-				<Button form='alertaEditForm' variant='primary' type='submit' disabled={loading || !isDirty}>
-					<i className='bi bi-save-fill'></i> {loading ? "Guardando..." : "Guardar Alerta"}
-				</Button>
-			</Modal.Footer>
-		</Modal>
+					<div className='space-y-2'>
+						<div className='flex items-center space-x-2'>
+							<Checkbox id='dismissable' checked={watch("dismissable")} onCheckedChange={(checked) => setValue("dismissable", checked, { shouldDirty: true })} />
+							<Label htmlFor='dismissable'>Dismissable</Label>
+						</div>
+						<div className='flex items-center space-x-2'>
+							<Checkbox id='hide' checked={watch("hide")} onCheckedChange={(checked) => setValue("hide", checked, { shouldDirty: true })} />
+							<Label htmlFor='hide'>Hide?</Label>
+						</div>
+					</div>
+				</form>
+
+				<DialogFooter>
+					<ConfirmarAccion title='¿Estás seguro de eliminar esta alerta?' description='Esta accion es irreversible' onConfirm={handleRemove}>
+						<Button variant='destructive' disabled={loading}>
+							<Trash2 className='inline h-4 w-4 mr-2' /> Eliminar
+						</Button>
+					</ConfirmarAccion>
+					<Button form='alertaEditForm' type='submit' disabled={loading || !isDirty}>
+						{loading ? (
+							<>
+								<Spinner className='mr-2' />
+								Guardando...
+							</>
+						) : (
+							<>
+								<Save className='inline h-4 w-4 mr-2' />
+								Guardar Alerta
+							</>
+						)}
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }

@@ -3,22 +3,26 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { NavLink, useNavigate } from "react-router";
-import { Button, Col, Container, FloatingLabel, Form, InputGroup, Row, Stack } from "react-bootstrap";
+import { Smile, Mail, EyeOff, LogIn, Key, Loader2 } from "lucide-react";
 
 import ReCAPTCHA from "react-google-recaptcha";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const FirebaseLogin = ({ onSignInSuccess, from }) => {
 	const [loading, setLoading] = useState(false);
 	const [captchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm();
+	const form = useForm({
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
 
 	const onCaptchaChange = (value) => {
 		setCaptchaValid(Boolean(value));
@@ -58,94 +62,92 @@ const FirebaseLogin = ({ onSignInSuccess, from }) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(handleAuth)}>
-			<div className='mb-3'>
-				<h3>
-					{" "}
-					<i className='bi bi-emoji-smile-fill'></i> ¡Hola! Que bueno tenerte de nuevo
-				</h3>
-				<h4>Por favor, iniciá sesión</h4>
-			</div>
-			<Form.Group className='mb-3 text-start'>
-				{/* <Form.Label htmlFor='email'>
-					<i className='bi bi-envelope-at-fill'></i> Email
-				</Form.Label> */}
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-envelope-at-fill'></i> Email
-						</>
-					}
-				>
-					<Form.Control
-						id='email'
-						isInvalid={errors.email}
-						autoComplete='username'
-						type='email'
-						placeholder='mail@example.com'
-						{...register("email", { required: true })}
-					/>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(handleAuth)} className='space-y-4'>
+				<div className='mb-6 text-center'>
+					<h3 className='text-2xl font-semibold flex items-center justify-center gap-2'>
+						<Smile className='h-6 w-6' />
+						¡Hola! Que bueno tenerte de nuevo
+					</h3>
+					<h4 className='text-xl mt-2'>Por favor, iniciá sesión</h4>
+				</div>
 
-					{errors.email && <Form.Control.Feedback type='invalid'>Un email es requerido</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
-
-			<Form.Group className='mb-3 text-start'>
-				<FloatingLabel
-					label={
-						<>
-							<i className='bi bi-eye-slash-fill'></i> Contraseña
-						</>
-					}
-				>
-					<Form.Control
-						isInvalid={errors.password}
-						placeholder='********'
-						autoComplete='current-password'
-						id='pass'
-						type={"password"}
-						{...register("password", { required: true })}
-					/>
-
-					{errors.password && <Form.Control.Feedback type='invalid'>Una contraseña es requerida</Form.Control.Feedback>}
-				</FloatingLabel>
-			</Form.Group>
-
-			<Container className='mb-3 d-flex justify-content-center'>
-				<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
-			</Container>
-
-			<Stack gap={3}>
-				<Button variant='primary' type='submit' disabled={loading || !captchaValid}>
-					{loading ? (
-						<>
-							<span className='spinner-border spinner-border-sm' aria-hidden='true'></span>
-							<span role='status'> Cargando...</span>
-						</>
-					) : (
-						<>
-							<i className='bi bi-box-arrow-in-right'></i> Iniciar Sesión
-						</>
+				<FormField
+					control={form.control}
+					name='email'
+					rules={{ required: "Un email es requerido" }}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='flex items-center gap-2'>
+								<Mail className='h-4 w-4' />
+								Email
+							</FormLabel>
+							<FormControl>
+								<Input {...field} type='email' placeholder='mail@example.com' autoComplete='username' />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
 					)}
-				</Button>
+				/>
 
-				<NavLink className='btn btn-outline-secondary' role='button' to='/login/passwordless'>
-					<i className='bi bi-key-fill'></i> Passwordless Login
-				</NavLink>
-			</Stack>
+				<FormField
+					control={form.control}
+					name='password'
+					rules={{ required: "Una contraseña es requerida" }}
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='flex items-center gap-2'>
+								<EyeOff className='h-4 w-4' />
+								Contraseña
+							</FormLabel>
+							<FormControl>
+								<Input {...field} type='password' placeholder='********' autoComplete='current-password' />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
 
-			<p className='text-secondary mt-2 mb-0'>
-				¿Olvidaste tu contraseña?{" "}
-				<NavLink className='link-underline link-underline-opacity-0' to='/login/passwordreset'>
-					Reestablecer contraseña
-				</NavLink>
-			</p>
-			<p className='text-secondary mt-1'>
-				¿No tenés una cuenta?{" "}
-				<NavLink className='link-underline link-underline-opacity-0' to='/register'>
-					Registrate
-				</NavLink>
-			</p>
+				<div className='flex justify-center'>
+					<ReCAPTCHA hl='es' sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} onChange={onCaptchaChange} />
+				</div>
+
+				<div className='space-y-2'>
+					<Button variant='default' type='submit' disabled={loading || !captchaValid} className='w-full'>
+						{loading ? (
+							<>
+								<Loader2 className='mr-2 h-4 w-4 animate-spin' />
+								Cargando...
+							</>
+						) : (
+							<>
+								<LogIn className='mr-2 h-4 w-4' />
+								Iniciar Sesión
+							</>
+						)}
+					</Button>
+
+					<NavLink to='/login/passwordless'>
+						<Button variant='outline' type='button' className='w-full mt-2'>
+							<Key className='mr-2 h-4 w-4' />
+							Passwordless Login
+						</Button>
+					</NavLink>
+				</div>
+
+				<p className='text-muted-foreground mt-2 text-center'>
+					¿Olvidaste tu contraseña?{" "}
+					<NavLink className='text-primary hover:underline' to='/login/passwordreset'>
+						Reestablecer contraseña
+					</NavLink>
+				</p>
+				<p className='text-muted-foreground text-center'>
+					¿No tenés una cuenta?{" "}
+					<NavLink className='text-primary hover:underline' to='/register'>
+						Registrate
+					</NavLink>
+				</p>
+			</form>
 		</Form>
 	);
 };

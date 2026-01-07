@@ -1,18 +1,15 @@
-// En: components/estadisticas/GraficoAvance.jsx
-
 import React, { useContext } from "react";
-import { Doughnut } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import { Chart, ArcElement, Tooltip, Legend, Title } from "chart.js";
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 
 import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
 import asignaturasData from "../../data/asignaturas.json";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import Container from "react-bootstrap/Container";
-
-Chart.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
-Chart.defaults.color = "#fff";
-Chart.defaults.plugins.legend.position = "bottom";
+const COLORS = {
+	aprobadas: "hsl(160, 84%, 39%)", // emerald-600
+	regularizadas: "hsl(38, 92%, 50%)", // amber-500
+	pendientes: "hsl(215, 16%, 47%)", // slate-500
+};
 
 export default function GraficoAvance() {
 	const asignaturas = useContext(AsignaturasContext);
@@ -33,54 +30,43 @@ export default function GraficoAvance() {
 
 	const pendientesCount = totalAsignaturas - cursadasCount;
 
-	const data = {
-		labels: ["Aprobadas", "Regularizadas", "A Cursar"],
-		datasets: [
-			{
-				label: "Cantidad",
-				data: [aprobadasCount, regularizadasSoloCount, pendientesCount],
-				backgroundColor: ["#198754", "#ffc107", "#6c757d"],
-				borderColor: ["#198754", "#ffc107", "#6c757d"],
-				borderWidth: 1,
-			},
-		],
-	};
+	const data = [
+		{ name: "Aprobadas", value: aprobadasCount, color: COLORS.aprobadas },
+		{ name: "Regularizadas", value: regularizadasSoloCount, color: COLORS.regularizadas },
+		{ name: "A Cursar", value: pendientesCount, color: COLORS.pendientes },
+	];
 
-	const options = {
-		responsive: true,
-		maintainAspectRatio: false,
-		plugins: {
-			title: {
-				display: true,
-				text: "Progreso",
-				font: {
-					size: 18,
-				},
-			},
-			legend: {
-				position: "bottom",
-			},
-			datalabels: {
-				color: "#fff",
-				font: {
-					// weight: "bold",
-					size: 14,
-				},
-			},
-		},
+	const renderCustomLabel = (entry) => {
+		return entry.value;
 	};
 
 	return (
-		<Container className='container-rounded-dark p-3 text-white max-width-80 position-relative mx-auto' style={{ height: "510px" }}>
-			<Doughnut data={data} options={options} />
-
-			<Container
-				className='position-absolute top-50 start-50 translate-middle text-center'
-				style={{ pointerEvents: "none" }} // Esto evita que bloquee el mouse
-			>
-				<h5 className='mb-0 text-secondary'>Total</h5>
-				<h2 className='mb-0 fw-bold'>{totalAsignaturas}</h2>
-			</Container>
-		</Container>
+		<Card className='h-full'>
+			<CardHeader>
+				<CardTitle className='text-lg font-semibold'>Progreso</CardTitle>
+			</CardHeader>
+			<CardContent className='relative'>
+				<ResponsiveContainer width='100%' height={400}>
+					<PieChart>
+						<Pie
+							data={data}
+							cx='50%'
+							cy='50%'
+							labelLine={false}
+							label={renderCustomLabel}
+							outerRadius={120}
+							fill='#8884d8'
+							dataKey='value'
+							style={{ fontSize: "14px", fontWeight: "600", outline: "none" }}
+						>
+							{data.map((entry, index) => (
+								<Cell key={`cell-${index}`} fill={entry.color} style={{ outline: "none" }} />
+							))}
+						</Pie>
+						<Legend wrapperStyle={{ fontSize: "14px" }} />
+					</PieChart>
+				</ResponsiveContainer>
+			</CardContent>
+		</Card>
 	);
 }

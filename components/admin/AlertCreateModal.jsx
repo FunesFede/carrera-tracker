@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Form, Modal, Button, FloatingLabel } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { addAlerta } from "../../utils/firebase/alerts";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Plus, X, Braces, Heading, FileText } from "lucide-react";
+import { Spinner } from "../Spinner";
 
 export default function AlertCreateModal({ show, setShow }) {
 	const [loading, setLoading] = useState(false);
@@ -11,12 +18,20 @@ export default function AlertCreateModal({ show, setShow }) {
 		register,
 		handleSubmit,
 		formState: { errors, isDirty },
-	} = useForm();
+		setValue,
+		watch,
+	} = useForm({
+		defaultValues: {
+			type: "info",
+			dismissable: false,
+			hide: false,
+		},
+	});
 
 	const handleModal = async (data) => {
 		setLoading(true);
 		toast
-			.promise(addAlerta(data), { pending: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
+			.promise(addAlerta(data), { loading: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
 			.catch((e) => console.error(e));
 		setLoading(false);
 		cerrarModal();
@@ -27,71 +42,82 @@ export default function AlertCreateModal({ show, setShow }) {
 	};
 
 	return (
-		<Modal show={show} onHide={setShow} centered>
-			<Modal.Header>
-				<Modal.Title>
-					<i className='bi bi-plus-lg'></i> Crear Alerta
-				</Modal.Title>
-			</Modal.Header>
+		<Dialog open={show} onOpenChange={setShow}>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>
+						<Plus className='inline h-5 w-5 mr-2' /> Crear Alerta
+					</DialogTitle>
+				</DialogHeader>
 
-			<Modal.Body>
-				<Form onSubmit={handleSubmit(handleModal)} id='alertaCreateForm'>
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-braces'></i> Tipo
-								</>
-							}
-						>
-							<Form.Select isInvalid={errors.type} {...register("type", { required: "Un tipo es requerido" })}>
-								<option value='info'>Info</option>
-								<option value='warning'>Warning</option>
-								<option value='danger'>Danger</option>
-							</Form.Select>
-						</FloatingLabel>
-					</Form.Group>
+				<form onSubmit={handleSubmit(handleModal)} id='alertaCreateForm' className='space-y-4'>
+					<div className='space-y-2'>
+						<Label htmlFor='type'>
+							<Braces className='inline h-4 w-4 mr-1' /> Tipo
+						</Label>
+						<Select onValueChange={(value) => setValue("type", value)} defaultValue='info'>
+							<SelectTrigger className={errors.type ? "border-destructive" : ""}>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value='info'>Info</SelectItem>
+								<SelectItem value='warning'>Warning</SelectItem>
+								<SelectItem value='danger'>Danger</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-card-heading'></i> Header
-								</>
-							}
-						>
-							<Form.Control placeholder='.' required autoFocus isInvalid={errors.header} {...register("header", { required: "Un titulo es requerido" })} />
-							{errors.header && <Form.Control.Feedback type='invalid'>{errors.header.message}</Form.Control.Feedback>}
-						</FloatingLabel>
-					</Form.Group>
+					<div className='space-y-2'>
+						<Label htmlFor='header'>
+							<Heading className='inline h-4 w-4 mr-1' /> Header
+						</Label>
+						<Input id='header' autoFocus className={errors.header ? "border-destructive" : ""} {...register("header", { required: "Un titulo es requerido" })} />
+						{errors.header && <p className='text-sm text-destructive'>{errors.header.message}</p>}
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<FloatingLabel
-							label={
-								<>
-									<i className='bi bi-card-text'></i> Content
-								</>
-							}
-						>
-							<Form.Control placeholder='.' as='textarea' isInvalid={errors.content} {...register("content", { required: "El contenido es requerido" })} />
-							{errors.content && <Form.Control.Feedback type='invalid'>{errors.content.message}</Form.Control.Feedback>}
-						</FloatingLabel>
-					</Form.Group>
+					<div className='space-y-2'>
+						<Label htmlFor='content'>
+							<FileText className='inline h-4 w-4 mr-1' /> Content
+						</Label>
+						<textarea
+							id='content'
+							className={`flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm ${errors.content ? "border-destructive" : "border-input"}`}
+							{...register("content", { required: "El contenido es requerido" })}
+						/>
+						{errors.content && <p className='text-sm text-destructive'>{errors.content.message}</p>}
+					</div>
 
-					<Form.Group className='mb-3 text-start'>
-						<Form.Check type='switch' label='Dismissable' {...register("dismissable")} />
-						<Form.Check type='switch' label='Hide?' {...register("hide")} />
-					</Form.Group>
-				</Form>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button variant='danger' disabled={loading} onClick={cerrarModal}>
-					<i className='bi bi-x-lg'></i> Cancelar
-				</Button>
-				<Button form='alertaCreateForm' variant='primary' type='submit' disabled={loading || !isDirty}>
-					<i className='bi bi-plus-lg'></i> {loading ? "Guardando..." : "Crear Alerta"}
-				</Button>
-			</Modal.Footer>
-		</Modal>
+					<div className='space-y-2'>
+						<div className='flex items-center space-x-2'>
+							<Checkbox id='dismissable' checked={watch("dismissable")} onCheckedChange={(checked) => setValue("dismissable", checked, { shouldDirty: true })} />
+							<Label htmlFor='dismissable'>Dismissable</Label>
+						</div>
+						<div className='flex items-center space-x-2'>
+							<Checkbox id='hide' checked={watch("hide")} onCheckedChange={(checked) => setValue("hide", checked, { shouldDirty: true })} />
+							<Label htmlFor='hide'>Hide?</Label>
+						</div>
+					</div>
+				</form>
+
+				<DialogFooter>
+					<Button variant='destructive' disabled={loading} onClick={cerrarModal}>
+						<X className='inline h-4 w-4 mr-2' /> Cancelar
+					</Button>
+					<Button form='alertaCreateForm' type='submit' disabled={loading || !isDirty}>
+						{loading ? (
+							<>
+								<Spinner className='mr-2' />
+								Guardando...
+							</>
+						) : (
+							<>
+								<Plus className='inline h-4 w-4 mr-2' />
+								Crear Alerta
+							</>
+						)}
+					</Button>
+				</DialogFooter>
+			</DialogContent>
+		</Dialog>
 	);
 }
