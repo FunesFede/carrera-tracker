@@ -3,7 +3,7 @@ import { isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } fro
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { NavLink, useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

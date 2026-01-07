@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
-import { sendPasswordResetEmail, updateEmail, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase/config";
+import { updateProfile } from "firebase/auth";
+
 import { useForm } from "react-hook-form";
 
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import UserStateContext from "../../utils/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +19,6 @@ const FirebaseUpdateProfile = () => {
 		register,
 		handleSubmit,
 		formState: { isDirty },
-		reset,
 	} = useForm({
 		defaultValues: {
 			email: user.email,
@@ -34,7 +32,7 @@ const FirebaseUpdateProfile = () => {
 		try {
 			await updateProfile(user, { displayName: data?.displayName });
 			toast.success("Tu perfil fue actualizado correctamente!");
-		} catch (err) {
+		} catch (error) {
 			console.error("Error al actualizar perfil: ", error);
 			let errorMessage = "Ocurrió un error desconocido";
 			toast.error(errorMessage);

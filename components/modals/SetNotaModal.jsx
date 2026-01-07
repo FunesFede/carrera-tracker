@@ -4,7 +4,7 @@ import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
 
 import { addNotaYAprobar } from "../../utils/firebase/notas";
 
-import { Slide, toast } from "react-toastify";
+import { toast } from "sonner";
 import { Pencil, Info, X, Save } from "lucide-react";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -25,7 +25,7 @@ export default function SetNotaModalR({ show, setShow, userId, asignatura, aNota
 		setLoading(true);
 
 		toast.promise(addNotaYAprobar(userId, asignatura, data, aNota, asignaturasContext), {
-			pending: aNota ? "Modificando nota..." : "Registrando nota...",
+			loading: aNota ? "Modificando nota..." : "Registrando nota...",
 			success: aNota ? "Nota modificada correctamente" : "Nota registrada correctamente",
 			error: aNota ? "Algo salió mal al intentar modificar la nota" : "Algo salió mal al intentar registrar la nota",
 		});

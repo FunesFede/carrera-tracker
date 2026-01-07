@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { ConfirmarAccion } from "./modals/ConfirmarAccion.jsx";
 
 export default function Asignatura({ asignatura }) {
 	const navigate = useNavigate();
@@ -38,9 +39,7 @@ export default function Asignatura({ asignatura }) {
 	};
 
 	const eliminarAsignatura = () => {
-		if (window.confirm("¿Seguro que deseas eliminar esta asignatura?\n\nAsignaturas que dependan de esta serán eliminadas y la nota de exámen final será removida.")) {
-			borraraAsignaturaYDependencias(user.uid, asignatura.acronimo);
-		}
+		borraraAsignaturaYDependencias(user.uid, asignatura.acronimo);
 	};
 
 	const getBgColor = () => {
@@ -106,16 +105,21 @@ export default function Asignatura({ asignatura }) {
 							<Info className='h-4 w-4' />
 						</Button>
 
-						<Button
-							variant='default'
-							className='bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600'
-							size='sm'
-							title='Eliminar Asignatura'
-							disabled={!hecha}
-							onClick={eliminarAsignatura}
+						<ConfirmarAccion
+							title='¿Eliminar asignatura?'
+							description='Asignaturas que dependan de esta serán eliminadas y la nota de exámen final será removida.'
+							onConfirm={eliminarAsignatura}
 						>
-							<Trash2 className='h-4 w-4' />
-						</Button>
+							<Button
+								variant='default'
+								className='bg-red-400 hover:bg-red-500 dark:bg-red-500 dark:hover:bg-red-600'
+								size='sm'
+								title='Eliminar Asignatura'
+								disabled={!hecha}
+							>
+								<Trash2 className='h-4 w-4' />
+							</Button>
+						</ConfirmarAccion>
 					</div>
 				</CardContent>
 			</Card>

@@ -5,10 +5,10 @@ import { auth } from "../firebase/config";
 import { sendEmailVerification, signOut } from "firebase/auth";
 import { useNavigate } from "react-router";
 
-import { toast } from "react-toastify";
 import { User, Settings, Mail, MailCheck, MailWarning, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 export default function Profile({ setAsignaturas }) {
 	const user = useContext(UserStateContext);

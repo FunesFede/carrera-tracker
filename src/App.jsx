@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
-import { ToastContainer, Slide } from "react-toastify";
 import { useState, useEffect } from "react";
 import { AlertTriangle, Info } from "lucide-react";
 
@@ -32,6 +31,8 @@ import { getAlertas } from "../utils/firebase/alerts.js";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Admin from "../pages/admin/Admin.jsx";
+import { Toaster } from "sonner";
+import { useDarkMode } from "../utils/hooks/useDarkMode";
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -40,6 +41,7 @@ function App() {
 	const [loading, setLoading] = useState(true);
 	const [authChecked, setAuthChecked] = useState(false);
 	const [alerts, setAlerts] = useState([]);
+	const isDark = useDarkMode();
 
 	const handleSignInSuccess = () => {
 		setLoading(true);
@@ -93,20 +95,22 @@ function App() {
 								<main className='container mx-auto px-4 mt-3'>
 									{alerts.length !== 0 && (
 										<div className='space-y-2 mb-4'>
-											{alerts.map((alert) => {
-												if (alert?.hide) return null;
+											{alerts
+												.filter((a) => !a?.hide)
+												.map((alert) => {
+													console.log(alert);
+													const variant = alert?.type === "danger" ? "destructive" : "default";
+													const Icon = alert?.type === "warning" || alert?.type === "danger" ? AlertTriangle : Info;
 
-												const variant = alert?.type === "danger" ? "destructive" : "default";
-												const Icon = alert?.type === "warning" || alert?.type === "danger" ? AlertTriangle : Info;
+													return (
+														<Alert key={alert.id} variant={variant}>
+															<Icon className='h-7 w-7' />
 
-												return (
-													<Alert key={alert.id} variant={variant}>
-														<Icon className='h-4 w-4' />
-														<AlertTitle>{alert?.header || "Información Importante"}</AlertTitle>
-														<AlertDescription>{alert.content}</AlertDescription>
-													</Alert>
-												);
-											})}
+															<AlertTitle className='font-bold text-lg'>{alert?.header || "Información Importante"}</AlertTitle>
+															<AlertDescription className='text-md'>{alert.content}</AlertDescription>
+														</Alert>
+													);
+												})}
 										</div>
 									)}
 								</main>
@@ -164,16 +168,7 @@ function App() {
 									<Route path='*' element={<NotFound />} />
 								</Routes>
 
-								<ToastContainer
-									position='top-center'
-									autoClose={5500}
-									hideProgressBar={false}
-									newestOnTop={false}
-									draggable
-									pauseOnHover
-									theme='dark'
-									transition={Slide}
-								/>
+								<Toaster position='top-center' theme={isDark ? "dark" : "light"} />
 							</div>
 							<Footer />
 						</BrowserRouter>

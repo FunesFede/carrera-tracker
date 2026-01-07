@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { editAlerta, removeAlerta } from "../../utils/firebase/alerts";
-import { toast } from "react-toastify";
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,15 +10,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Pen, Trash2, Save, Braces, Heading, FileText } from "lucide-react";
 import { Spinner } from "../Spinner";
+import { toast } from "sonner";
+import { ConfirmarAccion } from "../modals/ConfirmarAccion";
 
 export default function AlertaModal({ alert, show, setShow }) {
 	const [loading, setLoading] = useState(false);
+	console.log(alert);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isDirty },
 		setValue,
+		watch,
 	} = useForm({ values: alert });
 
 	const cerrarModal = () => {
@@ -29,7 +33,7 @@ export default function AlertaModal({ alert, show, setShow }) {
 		setLoading(true);
 		toast
 			.promise(editAlerta(alert.id, data), {
-				pending: "Editando alerta...",
+				loading: "Editando alerta...",
 				success: "Alerta modificada correctamente",
 				error: "Algo salió mal al intentar editar la alerta",
 			})
@@ -38,12 +42,11 @@ export default function AlertaModal({ alert, show, setShow }) {
 		cerrarModal();
 	};
 
-	const handleRemove = async () => {
-		if (!window.confirm("¿Estás seguro de eliminar esta alerta?")) return;
+	const handleRemove = () => {
 		setLoading(true);
 		toast
 			.promise(removeAlerta(alert.id), {
-				pending: "Eliminando alerta...",
+				loading: "Eliminando alerta...",
 				success: "Alerta eliminada correctamente",
 				error: "Algo salió mal al intentar eliminar la alerta",
 			})
@@ -66,7 +69,7 @@ export default function AlertaModal({ alert, show, setShow }) {
 						<Label htmlFor='type'>
 							<Braces className='inline h-4 w-4 mr-1' /> Tipo
 						</Label>
-						<Select onValueChange={(value) => setValue("type", value)} defaultValue={alert?.type}>
+						<Select onValueChange={(value) => setValue("type", value, { shouldDirty: true })} value={watch("type")}>
 							<SelectTrigger className={errors.type ? "border-destructive" : ""}>
 								<SelectValue />
 							</SelectTrigger>
@@ -100,20 +103,22 @@ export default function AlertaModal({ alert, show, setShow }) {
 
 					<div className='space-y-2'>
 						<div className='flex items-center space-x-2'>
-							<Checkbox id='dismissable' {...register("dismissable")} />
+							<Checkbox id='dismissable' checked={watch("dismissable")} onCheckedChange={(checked) => setValue("dismissable", checked, { shouldDirty: true })} />
 							<Label htmlFor='dismissable'>Dismissable</Label>
 						</div>
 						<div className='flex items-center space-x-2'>
-							<Checkbox id='hide' {...register("hide")} />
+							<Checkbox id='hide' checked={watch("hide")} onCheckedChange={(checked) => setValue("hide", checked, { shouldDirty: true })} />
 							<Label htmlFor='hide'>Hide?</Label>
 						</div>
 					</div>
 				</form>
 
 				<DialogFooter>
-					<Button variant='destructive' disabled={loading} onClick={() => handleRemove()}>
-						<Trash2 className='inline h-4 w-4 mr-2' /> Eliminar
-					</Button>
+					<ConfirmarAccion title='¿Estás seguro de eliminar esta alerta?' description='Esta accion es irreversible' onConfirm={handleRemove}>
+						<Button variant='destructive' disabled={loading}>
+							<Trash2 className='inline h-4 w-4 mr-2' /> Eliminar
+						</Button>
+					</ConfirmarAccion>
 					<Button form='alertaEditForm' type='submit' disabled={loading || !isDirty}>
 						{loading ? (
 							<>

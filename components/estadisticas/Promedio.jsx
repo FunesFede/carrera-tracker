@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";
 import { CheckCircle, FileCheck, FileX, FolderX, ListChecks, ChevronDown, ChevronRight, AlertTriangle, Pen, ChevronLeft } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export default function Promedio() {
 	const asignaturas = useContext(AsignaturasContext);
@@ -99,17 +100,17 @@ export default function Promedio() {
 
 			<Card className='bg-card'>
 				<CardContent className='pt-6'>
-					<div className='flex justify-between items-center cursor-pointer' onClick={() => setOpenCollapse(!openCollapse)}>
-						<h5 className='mb-0 flex items-center gap-2'>
-							<ListChecks className='h-5 w-5' /> Detalle de Notas
-						</h5>
-						<Button variant='ghost' size='icon'>
-							{openCollapse ? <ChevronDown className='h-4 w-4' /> : <ChevronLeft className='h-4 w-4' />}
-						</Button>
-					</div>
+					<Collapsible>
+						<CollapsibleTrigger className='flex justify-between items-center cursor-pointer' onClick={() => setOpenCollapse(!openCollapse)}>
+							<h5 className='mb-0 flex items-center gap-2'>
+								<ListChecks className='h-5 w-5' /> Detalle de Notas
+							</h5>
+							<Button variant='ghost' size='icon'>
+								{openCollapse ? <ChevronDown className='h-4 w-4' /> : <ChevronLeft className='h-4 w-4' />}
+							</Button>
+						</CollapsibleTrigger>
 
-					{openCollapse && (
-						<div className='mt-4'>
+						<CollapsibleContent className='mt-4'>
 							<Table>
 								<TableHeader>
 									<TableRow>
@@ -147,7 +148,9 @@ export default function Promedio() {
 										return (
 											<TableRow key={index}>
 												<TableCell>{asig.anio}</TableCell>
-												<TableCell>{asig.nombre}</TableCell>
+												<TableCell>
+													<NavLink to={`/asignaturas/${asig.acrom}`}>{asig.nombre}</NavLink>
+												</TableCell>
 												<TableCell className='normal-nums'>{asig.nota}</TableCell>
 												<TableCell>
 													<NavLink to={`/asignaturas/${asig.acrom}?edit=true`} className='text-primary hover:underline'>
@@ -167,8 +170,8 @@ export default function Promedio() {
 									</TableRow>
 								</TableFooter>
 							</Table>
-						</div>
-					)}
+						</CollapsibleContent>
+					</Collapsible>
 				</CardContent>
 			</Card>
 		</div>

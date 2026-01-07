@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { addAlerta } from "../../utils/firebase/alerts";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,12 +20,18 @@ export default function AlertCreateModal({ show, setShow }) {
 		formState: { errors, isDirty },
 		setValue,
 		watch,
-	} = useForm();
+	} = useForm({
+		defaultValues: {
+			type: "info",
+			dismissable: false,
+			hide: false,
+		},
+	});
 
 	const handleModal = async (data) => {
 		setLoading(true);
 		toast
-			.promise(addAlerta(data), { pending: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
+			.promise(addAlerta(data), { loading: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
 			.catch((e) => console.error(e));
 		setLoading(false);
 		cerrarModal();
@@ -83,11 +89,11 @@ export default function AlertCreateModal({ show, setShow }) {
 
 					<div className='space-y-2'>
 						<div className='flex items-center space-x-2'>
-							<Checkbox id='dismissable' {...register("dismissable")} />
+							<Checkbox id='dismissable' checked={watch("dismissable")} onCheckedChange={(checked) => setValue("dismissable", checked, { shouldDirty: true })} />
 							<Label htmlFor='dismissable'>Dismissable</Label>
 						</div>
 						<div className='flex items-center space-x-2'>
-							<Checkbox id='hide' {...register("hide")} />
+							<Checkbox id='hide' checked={watch("hide")} onCheckedChange={(checked) => setValue("hide", checked, { shouldDirty: true })} />
 							<Label htmlFor='hide'>Hide?</Label>
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAlertas, removeAlerta } from "../../utils/firebase/alerts";
+import { getAlertas } from "../../utils/firebase/alerts";
 import AlertaModal from "./AlertaEditModal";
 import AlertCreateModal from "./AlertCreateModal";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableFooter } from "@/components/ui/table";

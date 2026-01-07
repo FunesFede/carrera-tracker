@@ -65,6 +65,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Noto Color Emoji", system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   }
 }

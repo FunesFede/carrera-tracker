@@ -8,7 +8,7 @@ import { Percent, Archive, Hourglass, Info } from "lucide-react";
 export default function EstadisticasC({ regularizadas, aprobadas, regularizadasYAprobadas }) {
 	return (
 		<div className='space-y-4'>
-			<Alert className='bg-blue-300 dark:bg-blue-700'>
+			<Alert className='bg-blue-200 border-blue-300 dark:bg-blue-600/30 dark:border-blue-800'>
 				<Info className='h-4 w-4' />
 				<AlertDescription>Los totales y porcentajes solo toman en cuenta 7 electivas.</AlertDescription>
 			</Alert>

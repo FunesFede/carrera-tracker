@@ -5,8 +5,6 @@ import asignaturasData from "../data/asignaturas.json";
 
 import Asignatura from "../components/Asignatura.jsx";
 
-import MobileIndex from "../components/MobileIndex.jsx";
-
 export default function Main() {
 	const user = useContext(UserStateContext);
 
@@ -39,8 +37,6 @@ export default function Main() {
 					<h3 className='text-start mb-6 text-2xl font-semibold'>
 						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
 					</h3>
-
-					<MobileIndex />
 
 					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4'>
 						<div className='bg-card rounded-lg p-4 border' id='primero'>

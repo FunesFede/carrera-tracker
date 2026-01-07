@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { NavLink, useNavigate } from "react-router";
 import { Smile, Mail, EyeOff, LogIn, Key, Loader2 } from "lucide-react";
 
