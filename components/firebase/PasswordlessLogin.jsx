@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Smile, Link as LinkIcon } from "lucide-react";
-import { Spinner } from "../Spinner";
+import Spinner from "../Spinner.jsx";
 
 import ReCAPTCHA from "react-google-recaptcha";
 
 const actionCodeSettings = {
-	url: "https://carrera.ffede.ar/login/passwordless/callback",
+	url: "https://tracker.ffede.ar/login/passwordless/callback",
 	handleCodeInApp: true,
 };
 

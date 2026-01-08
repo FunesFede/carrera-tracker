@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, Mail, Lock } from "lucide-react";
-import { Spinner } from "../Spinner";
+import Spinner from "../Spinner.jsx";
 
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDarkMode } from "../../utils/hooks/useDarkMode";
 
-const FirebaseRegister = ({ onSignInSuccess }) => {
+const FirebaseRegister = () => {
 	const [loading, setLoading] = useState(false);
 	const [recaptchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
@@ -37,7 +37,6 @@ const FirebaseRegister = ({ onSignInSuccess }) => {
 			let userCredential;
 			userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
 			await updateProfile(userCredential.user, { displayName: data.displayName });
-			onSignInSuccess && onSignInSuccess(userCredential.user);
 			navigate("/", { replace: true });
 
 			await sendEmailVerification(userCredential.user);

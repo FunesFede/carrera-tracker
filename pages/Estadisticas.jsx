@@ -14,7 +14,7 @@ export default function Estadisticas() {
 	const regularizadasYAprobadas = new Set([...regularizadas, ...aprobadas]);
 
 	return (
-		<div className='py-8 bg-background flex flex-col flex-grow min-h-screen'>
+		<div className='py-8 bg-background flex flex-col flex-grow '>
 			<div className='container mx-auto px-4'>
 				<h3 className='text-start text-3xl font-semibold mb-6 flex items-center gap-2'>
 					<BarChart3 className='h-8 w-8' />

@@ -13,7 +13,7 @@ export default function Admin() {
 	});
 
 	return (
-		<div className='py-8 bg-background flex flex-col flex-grow min-h-screen'>
+		<div className='py-8 bg-background flex flex-col flex-grow '>
 			<div className='container mx-auto px-4'>
 				<Alerts />
 			</div>

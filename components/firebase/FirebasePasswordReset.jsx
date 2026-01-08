@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, KeyRound, DoorOpen } from "lucide-react";
-import { Spinner } from "../Spinner";
+import Spinner from "../Spinner.jsx";
 
 const FirebasePasswordReset = () => {
 	const [loading, setLoading] = useState(false);
