@@ -9,7 +9,7 @@ export default function Landing() {
 	return (
 		<>
 			<div className='bg-background'>
-				<div className='relative isolate px-6 lg:px-8'>
+				<div className='relative isolate px-6 mt-14 lg:px-8'>
 					<div className='mx-auto max-w-2xl py-32 sm:py-48 lg:py-56'>
 						<div className='text-center'>
 							<h1 className='text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl dark:text-white'>
