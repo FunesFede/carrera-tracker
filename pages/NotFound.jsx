@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 export default function NotFound() {
 	const navigate = useNavigate();
 	return (
-		<div className='py-8 bg-background flex flex-col flex-grow  items-center justify-center'>
+		<div className='py-8 bg-background flex flex-1 flex-grow  items-center justify-center'>
 			<div className='text-center px-4'>
 				<h1 className='text-6xl font-bold mb-4'>
 					404: <span className='text-red-500'>Not Found</span>

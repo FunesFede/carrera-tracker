@@ -126,7 +126,7 @@ export default function AsignaturaInfo() {
 		<>
 			<SetNotaModal show={showModal} setShow={setShowModal} aNota={nota} userId={user.uid} asignatura={asignatura} key={asignatura.acronimo + "NotaModal"} />
 
-			<div className='flex flex-col flex-grow justify-center my-4'>
+			<div className='flex flex-col flex-1 items-center justify-center my-4'>
 				<div className='w-responsive mx-auto px-4'>
 					<Breadcrumb className='mb-4'>
 						<BreadcrumbList>

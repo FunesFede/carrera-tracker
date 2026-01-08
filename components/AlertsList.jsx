@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
 
 export default function AlertsList({ alerts }) {
 	const location = useLocation();
-	const isLanding = location.pathname === "/";
+	const isLanding = location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register";
 	const filteredAlerts = alerts.filter((a) => !a?.hide);
 	const [isVisible, setIsVisible] = useState(true);
 
@@ -27,7 +27,7 @@ export default function AlertsList({ alerts }) {
 
 	return (
 		<div
-			className={`${isLanding ? "fixed top-20 left-0 right-0 z-50" : "mt-3"} container mx-auto px-4 transition-opacity duration-500 ${
+			className={`${isLanding ? "md:fixed md:top-20 md:left-0 md:right-0 md:z-50" : "mt-3"} container mx-auto px-4 transition-opacity duration-500 ${
 				isLanding && !isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
 			}`}
 		>

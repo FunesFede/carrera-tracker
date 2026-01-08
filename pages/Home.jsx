@@ -18,7 +18,7 @@ export default function Main() {
 
 	return (
 		<>
-			<div className='my-4 bg-background flex flex-col flex-grow '>
+			<div className='my-4 bg-background flex flex-1 flex-grow '>
 				<div className='container mx-auto px-4'>
 					<h3 className='text-start mb-6 text-2xl font-semibold'></h3>
 

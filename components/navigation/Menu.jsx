@@ -57,7 +57,7 @@ export default function MobileNavBar({ buscar, set }) {
 				<SheetHeader>
 					<SheetTitle>Menú</SheetTitle>
 					<SheetDescription className='flex md:hidden gap-2'>
-						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
+						{handleSaludo()}, {user?.displayName ? user.displayName : "como estás hoy?"}
 					</SheetDescription>
 				</SheetHeader>
 

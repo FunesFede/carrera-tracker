@@ -99,7 +99,7 @@ function App() {
 				<AsignaturasContext.Provider value={asignaturas}>
 					<NotasContext.Provider value={notas}>
 						<BrowserRouter>
-							<div className='min-h-screen'>
+							<div className='min-h-screen flex flex-col'>
 								<Navbar setAsignaturas={setAsignaturas} />
 								<AlertsList alerts={alerts} />
 								<Routes>

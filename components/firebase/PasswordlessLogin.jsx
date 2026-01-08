@@ -109,11 +109,11 @@ const PasswordlessLogin = ({ onSignInSuccess, from, signIn }) => {
 	return (
 		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
 			<div className='mb-3'>
-				<h3>
+				<h3 className='text-2xl font-semibold flex items-center justify-center gap-2'>
 					{" "}
 					<Smile className='inline w-5 h-5 mr-1' /> ¡Hola! Que bueno tenerte de nuevo
 				</h3>
-				<h4>{signIn ? "Procesando código..." : "Te vamos a enviar un email para que inicies sesión"}</h4>
+				<h4 className='text-xl mt-2'>{signIn ? "Procesando código..." : "Te vamos a enviar un email para que inicies sesión"}</h4>
 			</div>
 			<div className='space-y-2 text-start'>
 				<Label htmlFor='email'>

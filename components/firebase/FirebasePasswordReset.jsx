@@ -37,13 +37,13 @@ const FirebasePasswordReset = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(handleAuth)} className='space-y-4'>
-			<div className='mb-3'>
-				<h3>
-					{" "}
-					<Lock className='inline w-5 h-5 mr-1' /> Reestablecé tu contraseña
+		<form onSubmit={handleSubmit(handleAuth)} className='space-y-6'>
+			<div className='mb-3 text-center'>
+				<h3 className='text-2xl font-semibold flex items-center justify-center gap-2'>
+					<Lock className='w-5 h-5' />
+					Reestablecé tu contraseña
 				</h3>
-				<h5>Recibirás un mail para reestablecerla</h5>
+				<h4 className='text-xl mt-2'>Recibirás un mail para reestablecerla</h4>
 			</div>
 
 			<div className='space-y-2 text-start'>
@@ -79,7 +79,13 @@ const FirebasePasswordReset = () => {
 					<DoorOpen className='inline w-4 h-4 mr-2' /> Volver al login
 				</Button>
 			)}
-			<p className='text-muted-foreground m-1 text-center'>
+			<p className='text-muted-foreground mt-1 text-center'>
+				¿Tenés una cuenta?{" "}
+				<NavLink className='text-primary hover:underline' to='/login'>
+					Iniciá Sesión
+				</NavLink>
+			</p>
+			<p className='text-muted-foreground text-center'>
 				¿No tenés una cuenta?{" "}
 				<NavLink className='text-primary hover:underline' to='/register'>
 					Registrate
