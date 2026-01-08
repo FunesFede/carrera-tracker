@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-const FirebaseLogin = ({ onSignInSuccess, from }) => {
+const FirebaseLogin = () => {
 	const [loading, setLoading] = useState(false);
 	const [captchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
@@ -32,12 +32,8 @@ const FirebaseLogin = ({ onSignInSuccess, from }) => {
 		if (!captchaValid) return;
 		setLoading(true);
 		try {
-			const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
-			const user = userCredential.user;
-
-			onSignInSuccess && onSignInSuccess(user);
-			const to = typeof from === "string" ? from : from?.pathname || "/";
-			navigate(to, { replace: true });
+			await signInWithEmailAndPassword(auth, data.email, data.password);
+			navigate("/home");
 		} catch (err) {
 			let errorMessage = "Ocurrió un error desconocido. " + (err.code || "");
 			switch (err.code) {

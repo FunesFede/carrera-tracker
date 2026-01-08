@@ -2,8 +2,8 @@
 import "./App.css";
 
 // React & Router
-import React, { useState, useEffect, useContext } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 // Firebase
 import { onAuthStateChanged } from "firebase/auth";
@@ -44,53 +44,8 @@ import PasswordlessLogin from "../pages/auth/PasswordlessLoginPage.jsx";
 import PasswordlessLoginCallback from "../pages/auth/PasswordlessLoginCallback.jsx";
 import NotFound from "../pages/NotFound.jsx";
 
-const AlertsList = ({ alerts }) => {
-	const filteredAlerts = alerts.filter((a) => !a?.hide);
-
-	if (filteredAlerts.length === 0) return null;
-
-	return (
-		<div className='container mx-auto px-4 mt-3'>
-			<div className='space-y-2 mb-4'>
-				{filteredAlerts.map((alert) => {
-					const variant = alert?.type === "danger" ? "destructive" : "default";
-					const Icon = alert?.type === "warning" || alert?.type === "danger" ? AlertTriangle : Info;
-
-					return (
-						<Alert key={alert.id} variant={variant}>
-							<Icon className='h-7 w-7' />
-							<AlertTitle className='font-bold text-lg'>{alert?.header || "Información Importante"}</AlertTitle>
-							<AlertDescription className='text-md'>{alert.content}</AlertDescription>
-						</Alert>
-					);
-				})}
-			</div>
-		</div>
-	);
-};
-
-const RequireAuth = ({ children }) => {
-	const location = useLocation();
-	const [authChecked, setAuthChecked] = useState(false);
-	const [loading, setLoading] = useState(true);
-	const user = useContext(UserStateContext);
-	const asignaturas = useContext(AsignaturasContext);
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, () => {
-			setAuthChecked(true);
-		});
-		return () => unsubscribe();
-	}, []);
-
-	useEffect(() => {
-		setLoading(!asignaturas && !!user);
-	}, [asignaturas, user]);
-
-	if (authChecked && !user) return <Navigate to='/login' replace state={{ from: location }} />;
-	if (loading || !authChecked) return <Spinner />;
-	return children;
-};
+import RequireAuth from "../components/RequireAuth.jsx";
+import AlertsList from "../components/AlertsList.jsx";
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -144,7 +99,7 @@ function App() {
 				<AsignaturasContext.Provider value={asignaturas}>
 					<NotasContext.Provider value={notas}>
 						<BrowserRouter>
-							<div className='flex flex-col min-h-screen'>
+							<div className='min-h-screen'>
 								<Navbar setAsignaturas={setAsignaturas} />
 								<AlertsList alerts={alerts} />
 								<Routes>

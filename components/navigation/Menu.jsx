@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 
@@ -8,20 +8,46 @@ import { isAdmin } from "../../utils/admin";
 import { cn } from "@/lib/utils";
 import UserStateContext from "../../utils/contexts/UserContext";
 import { Button } from "@/components/ui/button";
-import { BarChart3, Building, Calendar, ChevronRight, ExternalLink, Home, Menu, Search, Wrench } from "lucide-react";
+import { BarChart3, Building, Calendar, ChevronRight, CloudSun, ExternalLink, Home, Menu, MoonStar, PlaneLanding, Rainbow, Search, UserStar, Wrench } from "lucide-react";
 import { NavLink } from "react-router";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export default function MobileNavBar({ buscar, set }) {
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
 	const [universidadOpen, setUniversidadOpen] = useState(false);
 	const [horariosOpen, setHorariosOpen] = useState(false);
 	const user = useContext(UserStateContext);
 
 	const isActive = (path) => location.pathname === path;
 
+	const handleSaludo = () => {
+		const now = new Date();
+		const hora = now.getHours();
+
+		if (hora >= 6 && hora < 12)
+			return (
+				<>
+					<CloudSun /> Buenos días
+				</>
+			);
+		if (hora >= 12 && hora < 20)
+			return (
+				<>
+					<Rainbow /> Buenas tardes
+				</>
+			);
+		if (hora >= 20 || hora < 6)
+			return (
+				<>
+					<MoonStar /> Buenas noches
+				</>
+			);
+		else return "👋 Hola";
+	};
+
 	return (
-		<Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+		<Sheet open={menuOpen} onOpenChange={setMenuOpen}>
 			<SheetTrigger asChild>
 				<Button variant='ghost' size='icon' className=''>
 					<Menu className='h-5 w-5' />
@@ -30,9 +56,12 @@ export default function MobileNavBar({ buscar, set }) {
 			<SheetContent side='left' className='w-[300px] overflow-y-auto'>
 				<SheetHeader>
 					<SheetTitle>Menú</SheetTitle>
+					<SheetDescription className='flex md:hidden gap-2'>
+						{handleSaludo()}, {user?.displayName ? user.displayName + "." : "como estás hoy?"}
+					</SheetDescription>
 				</SheetHeader>
 
-				<form role='search' onSubmit={buscar} className='md:hidden flex gap-2 mt-6 items-center'>
+				<form role='search' onSubmit={(e) => buscar(e, setMenuOpen)} className='md:hidden flex gap-2 mt-6 items-center'>
 					<Input
 						type='search'
 						placeholder='Buscar Asignatura...'
@@ -49,10 +78,10 @@ export default function MobileNavBar({ buscar, set }) {
 				<div className='flex flex-col gap-4 mt-6'>
 					<NavLink
 						to='/home'
-						onClick={() => setMobileMenuOpen(false)}
+						onClick={() => setMenuOpen(false)}
 						className={cn(
 							"flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-							isActive("/") ? "bg-accent text-accent-foreground" : "hover:bg-accent",
+							isActive("/home") ? "bg-accent text-accent-foreground" : "hover:bg-accent",
 							!user && "pointer-events-none opacity-50"
 						)}
 					>
@@ -62,7 +91,7 @@ export default function MobileNavBar({ buscar, set }) {
 
 					<NavLink
 						to='/estadisticas'
-						onClick={() => setMobileMenuOpen(false)}
+						onClick={() => setMenuOpen(false)}
 						className={cn(
 							"flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
 							isActive("/estadisticas") ? "bg-accent text-accent-foreground" : "hover:bg-accent",
@@ -72,6 +101,14 @@ export default function MobileNavBar({ buscar, set }) {
 						<BarChart3 className='h-4 w-4' />
 						Estadísticas
 					</NavLink>
+
+					<div className='flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors '>
+						<NavLink to='/valorar' className='flex items-center gap-2 opacity-50 pointer-events-none'>
+							<UserStar className='h-4 w-4' />
+							Valorar Comisiones{" "}
+						</NavLink>
+						<Badge className='text-white text-center bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 select-none'>Pronto</Badge>
+					</div>
 
 					<Separator />
 
@@ -127,8 +164,7 @@ export default function MobileNavBar({ buscar, set }) {
 								rel='noopener noreferrer'
 								className='flex items-center justify-between px-3 py-2 text-sm rounded-md hover:bg-accent'
 							>
-								Correlativas PDF
-								<ExternalLink className='h-3 w-3' />
+								PDF Correlativas
 							</a>
 						</CollapsibleContent>
 					</Collapsible>
@@ -164,12 +200,25 @@ export default function MobileNavBar({ buscar, set }) {
 						</CollapsibleContent>
 					</Collapsible>
 
+					<Separator />
+					<NavLink
+						to='/'
+						onClick={() => setMenuOpen(false)}
+						className={cn(
+							"flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+							isActive("/") ? "bg-accent text-accent-foreground" : "hover:bg-accent"
+						)}
+					>
+						<PlaneLanding className='h-4 w-4' />
+						Landing Page
+					</NavLink>
+
 					{isAdmin(user?.uid) && (
 						<>
 							<Separator />
 							<NavLink
 								to='/admin'
-								onClick={() => setMobileMenuOpen(false)}
+								onClick={() => setMenuOpen(false)}
 								className={cn(
 									"flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
 									isActive("/admin") ? "bg-accent text-accent-foreground" : "hover:bg-accent"

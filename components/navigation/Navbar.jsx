@@ -18,7 +18,7 @@ export default function NavbarR({ setAsignaturas }) {
 	const user = useContext(UserStateContext);
 	const { isDark, toggleDarkMode } = useDarkMode();
 
-	const buscarAsignatura = (e) => {
+	const buscarAsignatura = (e, setMenuOpen = null) => {
 		e.preventDefault();
 
 		if ((query == "" || query == " " || !query) && window.location.pathname.includes("asignaturas")) navigate("/home");
@@ -30,6 +30,7 @@ export default function NavbarR({ setAsignaturas }) {
 			asignaturas.find((a) => a.nombre.toLowerCase().includes(lowerQuery) || a.acronimo.toLowerCase().includes(lowerQuery));
 		if (closest) {
 			navigate(`/asignaturas/${closest.acronimo}`);
+			setMenuOpen && setMenuOpen(false);
 		} else {
 			toast.error("No hay resultados para la asignatura buscada, ¿estás escribiendo el acrónimo o nombre correctamente?");
 		}

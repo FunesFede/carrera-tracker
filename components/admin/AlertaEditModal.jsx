@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Pen, Trash2, Save, Braces, Heading, FileText } from "lucide-react";
-import { Spinner } from "../Spinner";
+import Spinner from "../Spinner";
 import { toast } from "sonner";
 import { ConfirmarAccion } from "../modals/ConfirmarAccion";
 
@@ -30,26 +30,23 @@ export default function AlertaModal({ alert, show, setShow }) {
 
 	const handleModal = async (data) => {
 		setLoading(true);
-		toast
-			.promise(editAlerta(alert.id, data), {
-				loading: "Editando alerta...",
-				success: "Alerta modificada correctamente",
-				error: "Algo salió mal al intentar editar la alerta",
-			})
-			.catch((e) => console.error(e));
+		toast.promise(editAlerta(alert.id, data), {
+			loading: "Editando alerta...",
+			success: "Alerta modificada correctamente",
+			error: "Algo salió mal al intentar editar la alerta",
+		});
 		setLoading(false);
 		cerrarModal();
 	};
 
 	const handleRemove = () => {
 		setLoading(true);
-		toast
-			.promise(removeAlerta(alert.id), {
-				loading: "Eliminando alerta...",
-				success: "Alerta eliminada correctamente",
-				error: "Algo salió mal al intentar eliminar la alerta",
-			})
-			.catch((e) => console.error(e));
+		toast.promise(removeAlerta(alert.id), {
+			loading: "Eliminando alerta...",
+			success: "Alerta eliminada correctamente",
+			error: "Algo salió mal al intentar eliminar la alerta",
+		});
+
 		setLoading(false);
 		cerrarModal();
 	};

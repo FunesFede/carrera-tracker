@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Plus, X, Braces, Heading, FileText } from "lucide-react";
-import { Spinner } from "../Spinner";
+import Spinner from "../Spinner.jsx";
 
 export default function AlertCreateModal({ show, setShow }) {
 	const [loading, setLoading] = useState(false);
@@ -30,9 +30,7 @@ export default function AlertCreateModal({ show, setShow }) {
 
 	const handleModal = async (data) => {
 		setLoading(true);
-		toast
-			.promise(addAlerta(data), { loading: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" })
-			.catch((e) => console.error(e));
+		toast.promise(addAlerta(data), { loading: "Añadiendo alerta...", success: "Alerta añadida correctamente", error: "Algo salió mal al intentar añadir la alerta" });
 		setLoading(false);
 		cerrarModal();
 	};
