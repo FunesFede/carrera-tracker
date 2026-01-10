@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
-import UserStateContext from "../utils/contexts/UserContext";
+import React from "react";
+import { useUser } from "../utils/contexts/UserContext";
+import { useAsignaturas } from "../utils/contexts/AsignaturasContext";
 
 import { auth } from "../firebase/config";
 import { sendEmailVerification, signOut } from "firebase/auth";
@@ -10,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 
-export default function Profile({ setAsignaturas }) {
-	const user = useContext(UserStateContext);
+export default function Profile() {
+	const { user } = useUser();
+	const { setAsignaturas } = useAsignaturas();
 	const navigate = useNavigate();
 
 	const handleCerrarSession = () => {

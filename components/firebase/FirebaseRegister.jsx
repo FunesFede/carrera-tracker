@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
@@ -13,12 +13,18 @@ import Spinner from "../Spinner.jsx";
 
 import ReCAPTCHA from "react-google-recaptcha";
 import { useDarkMode } from "../../utils/hooks/useDarkMode";
+import { useUser } from "../../utils/contexts/UserContext";
 
 const FirebaseRegister = () => {
 	const [loading, setLoading] = useState(false);
 	const [recaptchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
 	const { isDark } = useDarkMode();
+	const { user } = useUser();
+
+	useEffect(() => {
+		if (user) navigate("/home");
+	});
 
 	const {
 		register,

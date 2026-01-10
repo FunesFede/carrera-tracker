@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Check, Clock, Lock, Unlock, Info, Trash2 } from "lucide-react";
 
-import AsignaturasContext from "../utils/contexts/AsignaturasContext.js";
-import UserStateContext from "../utils/contexts/UserContext.js";
+import { useAsignaturas } from "../utils/contexts/AsignaturasContext.js";
+import { useUser } from "../utils/contexts/UserContext.js";
 import SetNotaModal from "./modals/SetNotaModal.jsx";
 
 import { esCursable, esHecha } from "../utils/asignaturasHelpers.js";
@@ -17,8 +17,8 @@ import { ConfirmarAccion } from "./modals/ConfirmarAccion.jsx";
 
 export default function Asignatura({ asignatura }) {
 	const navigate = useNavigate();
-	const asignaturas = useContext(AsignaturasContext);
-	const user = useContext(UserStateContext);
+	const { asignaturas } = useAsignaturas();
+	const { user } = useUser();
 	const [showModal, setShowModal] = useState(false);
 
 	const hecha = asignaturas ? esHecha(asignaturas, asignatura) : false;
@@ -45,10 +45,10 @@ export default function Asignatura({ asignatura }) {
 	const getBgColor = () => {
 		if (hecha) {
 			return asignaturas.aprobadas.includes(asignatura.acronimo)
-				? "bg-emerald-100 dark:bg-emerald-900/30 border-emerald-300 dark:border-emerald-700"
-				: "bg-amber-100 dark:bg-amber-900/30 border-amber-300 dark:border-amber-700";
+				? "bg-emerald-200 dark:bg-emerald-900/30 border-emerald-400 dark:border-emerald-700"
+				: "bg-amber-200 dark:bg-amber-900/30 border-amber-400 dark:border-amber-700";
 		}
-		return cursable ? "bg-slate-200 dark:bg-slate-700/30 border-slate-300 dark:border-slate-700" : "bg-rose-200 dark:bg-rose-900/30 border-rose-300 dark:border-rose-700";
+		return cursable ? "bg-slate-300 dark:bg-slate-700/30 border-slate-400 dark:border-slate-700" : "bg-rose-300 dark:bg-rose-900/30 border-rose-400 dark:border-rose-700";
 	};
 
 	return (

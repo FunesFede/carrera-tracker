@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { updateProfile } from "firebase/auth";
 
 import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
-import UserStateContext from "../../utils/contexts/UserContext";
+import { useUser } from "../../utils/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,7 @@ import { User, Mail, Camera, Save } from "lucide-react";
 import Spinner from "../Spinner.jsx";
 
 const FirebaseUpdateProfile = () => {
-	const user = useContext(UserStateContext);
+	const { user } = useUser();
 	const [loading, setLoading] = useState(false);
 
 	const {

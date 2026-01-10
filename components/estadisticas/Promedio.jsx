@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
-import AsignaturasContext from "../../utils/contexts/AsignaturasContext";
-import NotasContext from "../../utils/contexts/NotasContext";
+import { useAsignaturas } from "../../utils/contexts/AsignaturasContext";
+import { useNotas } from "../../utils/contexts/NotasContext";
 import asignaturasData from "../../data/asignaturas.json";
 import { NavLink } from "react-router";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -15,8 +15,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function Promedio() {
-	const asignaturas = useContext(AsignaturasContext);
-	const notas = useContext(NotasContext);
+	const { asignaturas } = useAsignaturas();
+	const notas = useNotas();
 	const [aplazos, setAplazos] = useState(0);
 
 	const faltantes = (asignaturas.aprobadas || []).filter((acrom) => !(acrom in notas));

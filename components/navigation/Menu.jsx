@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { isAdmin } from "../../utils/admin";
 import { cn } from "@/lib/utils";
-import UserStateContext from "../../utils/contexts/UserContext";
+import { useUser } from "../../utils/contexts/UserContext";
 import { Button } from "@/components/ui/button";
 import { BarChart3, Building, Calendar, ChevronRight, CloudSun, ExternalLink, Home, Menu, MoonStar, PlaneLanding, Rainbow, Search, UserStar, Wrench } from "lucide-react";
 import { NavLink } from "react-router";
@@ -17,7 +17,7 @@ export default function MobileNavBar({ buscar, set }) {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const [universidadOpen, setUniversidadOpen] = useState(false);
 	const [horariosOpen, setHorariosOpen] = useState(false);
-	const user = useContext(UserStateContext);
+	const { user } = useUser();
 
 	const isActive = (path) => location.pathname === path;
 

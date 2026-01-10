@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 
-import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
+import { useAsignaturas } from "../../utils/contexts/AsignaturasContext.js";
 import asignaturasData from "../../data/asignaturas.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -12,7 +12,7 @@ const COLORS = {
 };
 
 export default function GraficoAvance() {
-	const asignaturas = useContext(AsignaturasContext);
+	const { asignaturas } = useAsignaturas();
 
 	if (!asignaturas) {
 		return null;

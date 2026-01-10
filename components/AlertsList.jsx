@@ -2,8 +2,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertTriangle, Info } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { useAlerts } from "../utils/contexts/AlertsContext";
 
-export default function AlertsList({ alerts }) {
+export default function AlertsList() {
+	const alerts = useAlerts();
 	const location = useLocation();
 	const isLanding = location.pathname === "/" || location.pathname === "/login" || location.pathname === "/register";
 	const filteredAlerts = alerts.filter((a) => !a?.hide);
@@ -16,10 +18,13 @@ export default function AlertsList({ alerts }) {
 		}
 
 		const handleScroll = () => {
-			setIsVisible(window.scrollY < 100);
+			// Optimización: solo actualizar si el valor cambió para evitar re-renders innecesarios
+			const shouldBeVisible = window.scrollY < 100;
+			setIsVisible((prev) => (prev !== shouldBeVisible ? shouldBeVisible : prev));
 		};
 
-		window.addEventListener("scroll", handleScroll);
+		// { passive: true } mejora performance en eventos de scroll
+		window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, [isLanding]);
 

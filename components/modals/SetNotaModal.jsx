@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import AsignaturasContext from "../../utils/contexts/AsignaturasContext.js";
+import { useAsignaturas } from "../../utils/contexts/AsignaturasContext.js";
 
 import { addNotaYAprobar } from "../../utils/firebase/notas";
 
@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 export default function SetNotaModalR({ show, setShow, userId, asignatura, aNota }) {
 	const [loading, setLoading] = useState(false);
 
-	const asignaturasContext = useContext(AsignaturasContext);
+	const { asignaturas: asignaturasContext } = useAsignaturas();
 
 	const form = useForm({
 		defaultValues: { nota: aNota || "" },

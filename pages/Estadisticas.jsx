@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import { BarChart3 } from "lucide-react";
 
 import Totales from "../components/estadisticas/Totales.jsx";
-import AsignaturasContext from "../utils/contexts/AsignaturasContext.js";
+import { useAsignaturas } from "../utils/contexts/AsignaturasContext.js";
 import Promedio from "../components/estadisticas/Promedio.jsx";
 
 export default function Estadisticas() {
-	const asignaturas = useContext(AsignaturasContext);
+	const { asignaturas } = useAsignaturas();
 
 	let regularizadas = asignaturas ? asignaturas.regularizadas : [];
 	let aprobadas = asignaturas ? asignaturas.aprobadas : [];

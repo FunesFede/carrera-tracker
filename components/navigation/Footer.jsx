@@ -1,5 +1,5 @@
 import React from "react";
-import { Heart } from "lucide-react";
+import { Heart, Mail } from "lucide-react";
 
 export default function Footer() {
 	// Cloudflare Pages environment variables
@@ -17,7 +17,7 @@ export default function Footer() {
 				<p>
 					¿Dudas o consultas?{" "}
 					<a
-						className='hover:underline'
+						className='text-blue-500 dark:text-blue-400 hover:underline'
 						href='&#77;&#65;&#73;&#108;&#84;&#111;&#58;&#116;&#114;&#97;&#99;&#107;&#101;&#114;&#64;&#102;&#102;&#101;&#100;&#101;&#46;&#97;&#114;'
 					>
 						Ponete en contacto

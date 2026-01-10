@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { useForm } from "react-hook-form";
@@ -11,11 +11,17 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useUser } from "../../utils/contexts/UserContext";
 
 const FirebaseLogin = () => {
 	const [loading, setLoading] = useState(false);
 	const [captchaValid, setCaptchaValid] = useState(false);
 	const navigate = useNavigate();
+	const { user } = useUser();
+
+	useEffect(() => {
+		if (user) navigate("/home");
+	});
 
 	const form = useForm({
 		defaultValues: {

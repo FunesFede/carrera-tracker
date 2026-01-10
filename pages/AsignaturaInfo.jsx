@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams, useSearchParams } from "react-router";
 
 import asignaturasData from "../data/asignaturas.json";
-import AsignaturasContext from "../utils/contexts/AsignaturasContext.js";
-import UserStateContext from "../utils/contexts/UserContext.js";
+import { useAsignaturas } from "../utils/contexts/AsignaturasContext.js";
+import { useUser } from "../utils/contexts/UserContext.js";
+import { useNotas } from "../utils/contexts/NotasContext.js";
 
 import { esCursable, esHecha } from "../utils/asignaturasHelpers.js";
 
 import SetNotaModal from "../components/modals/SetNotaModal.jsx";
-import NotasContext from "../utils/contexts/NotasContext.js";
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -22,9 +22,9 @@ export default function AsignaturaInfo() {
 	const navigate = useNavigate();
 	const [showModal, setShowModal] = useState(false);
 
-	const asignaturas = useContext(AsignaturasContext);
-	const notas = useContext(NotasContext);
-	const user = useContext(UserStateContext);
+	const { asignaturas } = useAsignaturas();
+	const notas = useNotas();
+	const { user } = useUser();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -96,8 +96,8 @@ export default function AsignaturaInfo() {
 		if (esCursable(asignaturas, asig)) {
 			if (esHecha(asignaturas, asig)) {
 				if (asignaturas.aprobadas.includes(asig.acronimo)) return "text-green-600";
-				else return "text-yellow-600 dark:text-yellow-500";
-			} else return "";
+				else return "text-amber-500 dark:text-amber-400";
+			} else return "text-blue-600 dark:text-blue-500";
 		} else return "text-red-600";
 	};
 

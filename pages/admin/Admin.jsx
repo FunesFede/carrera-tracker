@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import Alerts from "../../components/admin/Alerts";
 import { useNavigate } from "react-router";
 import { isAdmin } from "../../utils/admin";
-import UserStateContext from "../../utils/contexts/UserContext";
+import { useUser } from "../../utils/contexts/UserContext";
 
 export default function Admin() {
 	const navigate = useNavigate();
-	const user = useContext(UserStateContext);
+	const { user } = useUser();
 
 	useEffect(() => {
 		if (!isAdmin(user?.uid)) navigate("/", { replace: true });
